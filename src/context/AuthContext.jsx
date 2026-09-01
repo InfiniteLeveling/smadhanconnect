@@ -73,15 +73,43 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (email, password) => {
-    if (!isConfiguredSupabase()) throw new Error("Offline mode: Use the top bar to switch roles.");
+  const login = async (email, password, roleHint = null) => {
+    if (!isConfiguredSupabase()) {
+      // Offline / Demo Mode authentication
+      let matchedProfile = null;
+      if (email) {
+        matchedProfile = MOCK_PROFILES.find(p => p.email.toLowerCase() === email.trim().toLowerCase());
+      }
+      if (!matchedProfile && roleHint) {
+        matchedProfile = MOCK_PROFILES.find(p => p.role === roleHint);
+      }
+      if (!matchedProfile) {
+        matchedProfile = MOCK_PROFILES[0]; // fallback to Citizen
+      }
+      setUser({ id: matchedProfile.id, email: matchedProfile.email });
+      setProfile(matchedProfile);
+      return { user: matchedProfile, session: { user: matchedProfile } };
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
     return data;
   };
 
   const register = async (email, password, fullName, role) => {
-    if (!isConfiguredSupabase()) throw new Error("Offline mode: Cannot register new users.");
+    if (!isConfiguredSupabase()) {
+      const newMockUser = {
+        id: `user-${Date.now()}`,
+        full_name: fullName || 'New Citizen',
+        email: email,
+        role: role || 'CITIZEN',
+        district: 'Ranchi',
+        avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(fullName || 'User')}`
+      };
+      setUser({ id: newMockUser.id, email: newMockUser.email });
+      setProfile(newMockUser);
+      return { user: newMockUser };
+    }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,

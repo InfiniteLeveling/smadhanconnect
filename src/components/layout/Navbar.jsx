@@ -177,9 +177,13 @@ export const Navbar = () => {
               )}
             </div>
 
-            {/* Persona Quick Card */}
-            {profile && (
-              <div className="hidden sm:flex items-center gap-2.5 pl-3 border-l border-slate-200">
+            {/* Persona Quick Card or Sign In Link */}
+            {profile ? (
+              <Link 
+                to="/login"
+                title="Switch / Re-authenticate Account"
+                className="hidden sm:flex items-center gap-2.5 pl-3 border-l border-slate-200 hover:opacity-80 transition-opacity"
+              >
                 <img
                   src={profile.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Demo'}
                   alt={profile.full_name}
@@ -193,7 +197,13 @@ export const Navbar = () => {
                     {profile.role}
                   </p>
                 </div>
-              </div>
+              </Link>
+            ) : (
+              <Link to="/login" className="hidden sm:inline-block">
+                <button className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors">
+                  Sign In
+                </button>
+              </Link>
             )}
 
             {/* Mobile Menu Trigger */}
@@ -225,7 +235,12 @@ export const Navbar = () => {
               <span>{link.name}</span>
             </Link>
           ))}
-          <div className="pt-2">
+          <div className="pt-2 flex flex-col gap-2">
+            <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+              <button className="w-full py-2.5 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 flex items-center justify-center gap-2">
+                <span>Sign In to Account</span>
+              </button>
+            </Link>
             <Link to="/report-problem" onClick={() => setMobileMenuOpen(false)}>
               <button className="w-full py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-brand-600 to-emerald-600 shadow-md shadow-brand-600/25 flex items-center justify-center gap-2">
                 <PlusCircle className="w-4 h-4" />
