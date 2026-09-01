@@ -112,8 +112,8 @@ export const MessagingPage = () => {
                 <button
                   key={conv.id}
                   onClick={() => setActiveConvId(conv.id)}
-                  className={`w-full p-4 text-left transition-colors flex items-start gap-3 ${
-                    isSelected ? 'bg-white border-l-4 border-l-brand-600 shadow-xs' : 'hover:bg-slate-100/60'
+                  className={`w-full text-left p-3.5 rounded-xl transition-all ${
+                    isSelected ? 'bg-white border-l-4 border-l-brand-600 shadow-sm' : 'hover:bg-slate-100/60'
                   }`}
                 >
                   <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-600 to-emerald-400 text-white font-bold flex items-center justify-center shrink-0 shadow-sm">
@@ -179,10 +179,10 @@ export const MessagingPage = () => {
                   </div>
 
                   <div
-                    className={`max-w-md rounded-2xl px-4 py-2.5 text-sm shadow-xs ${
+                    className={`max-w-md rounded-2xl px-4 py-2.5 text-sm shadow-sm ${
                       isMe
-                        ? 'bg-brand-600 text-white rounded-tr-xs'
-                        : 'bg-white border border-slate-200 text-slate-800 rounded-tl-xs'
+                        ? 'bg-brand-600 text-white rounded-tr-sm'
+                        : 'bg-white border border-slate-200 text-slate-800 rounded-tl-sm'
                     }`}
                   >
                     <p className="leading-relaxed whitespace-pre-wrap">{m.content}</p>

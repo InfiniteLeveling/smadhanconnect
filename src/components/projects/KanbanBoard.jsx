@@ -97,7 +97,7 @@ export const KanbanBoard = ({ tasks, onUpdateStatus, onCreateTask, projectId }) 
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
                   {col.label}
                 </span>
-                <span className="bg-white text-slate-700 text-xs px-2 py-0.5 rounded-full font-bold shadow-xs">
+                <span className="bg-white text-slate-700 text-xs px-2 py-0.5 rounded-full font-bold shadow-sm">
                   {columnTasks.length}
                 </span>
               </div>
@@ -111,7 +111,7 @@ export const KanbanBoard = ({ tasks, onUpdateStatus, onCreateTask, projectId }) 
                   columnTasks.map((task) => (
                     <div 
                       key={task.id} 
-                      className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs hover:shadow-md transition-shadow space-y-3"
+                      className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow space-y-3"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <StatusBadge status={task.priority} />
