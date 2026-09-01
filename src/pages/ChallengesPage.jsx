@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getAllChallenges, upvoteChallenge } from '../services/dataService';
 import { ChallengeCard } from '../components/challenges/ChallengeCard';
 import { Button } from '../components/ui/Button';
+import { EmptyState } from '../components/ui/EmptyState';
 import { 
   Compass, 
   Search, 
@@ -255,13 +256,21 @@ export const ChallengesPage = () => {
             Loading marketplace challenges...
           </div>
         ) : filteredChallenges.length === 0 ? (
-          <div className="bg-white rounded-3xl border border-slate-200 p-16 text-center space-y-4">
-            <Layers className="w-12 h-12 text-slate-400 mx-auto" />
-            <h3 className="text-xl font-bold text-slate-900">No matching challenges found</h3>
-            <p className="text-slate-500 text-sm max-w-md mx-auto">
-              Try adjusting your district, category, or search filters to find active civic problems.
-            </p>
-          </div>
+          <EmptyState
+            icon={Compass}
+            title="No matching challenges found"
+            description="Interesting problems are waiting to be discovered across Jharkhand. Try adjusting your district, category, or urgency filters."
+            actionText="Reset All Filters"
+            onActionClick={() => {
+              setSearchQuery('');
+              setSelectedDistrict('All Districts');
+              setSelectedCategory('All Categories');
+              setSelectedStatus('ALL');
+              setSelectedUrgency('ALL');
+            }}
+            secondaryActionText="+ Report a Problem"
+            secondaryActionLink="/report-problem"
+          />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredChallenges.map((challenge) => (

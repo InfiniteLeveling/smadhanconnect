@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Interactive3DCard } from '../ui/Interactive3DCard';
 import { 
   FileEdit, 
   ShieldCheck, 
@@ -22,8 +23,8 @@ const WORKFLOW_CARDS = [
     tag: 'Draft Auto-Saving',
     tagColor: 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
     iconGradient: 'from-emerald-500 to-teal-600',
-    accentBorder: 'group-hover:border-emerald-500',
-    glowColor: 'group-hover:shadow-emerald-500/10',
+    accentBorder: 'hover:border-emerald-500',
+    glowColor: 'hover:shadow-emerald-500/10',
     highlightText: 'Instant AI categorization and offline local draft persistence.'
   },
   {
@@ -35,8 +36,8 @@ const WORKFLOW_CARDS = [
     tag: 'Nodal Verification',
     tagColor: 'bg-green-50 text-green-700 border-green-200/60',
     iconGradient: 'from-green-600 to-emerald-700',
-    accentBorder: 'group-hover:border-green-500',
-    glowColor: 'group-hover:shadow-green-500/10',
+    accentBorder: 'hover:border-green-500',
+    glowColor: 'hover:shadow-green-500/10',
     highlightText: 'Official review portal with SLA tracking and priority grading.'
   },
   {
@@ -48,8 +49,8 @@ const WORKFLOW_CARDS = [
     tag: '24 Districts',
     tagColor: 'bg-teal-50 text-teal-700 border-teal-200/60',
     iconGradient: 'from-teal-500 to-brand-600',
-    accentBorder: 'group-hover:border-teal-500',
-    glowColor: 'group-hover:shadow-teal-500/10',
+    accentBorder: 'hover:border-teal-500',
+    glowColor: 'hover:shadow-teal-500/10',
     highlightText: 'Collaborative open repository for students, researchers & startups.'
   },
   {
@@ -61,8 +62,8 @@ const WORKFLOW_CARDS = [
     tag: 'Interactive Kanban',
     tagColor: 'bg-brand-50 text-brand-700 border-brand-200/60',
     iconGradient: 'from-brand-600 to-emerald-600',
-    accentBorder: 'group-hover:border-brand-500',
-    glowColor: 'group-hover:shadow-brand-500/10',
+    accentBorder: 'hover:border-brand-500',
+    glowColor: 'hover:shadow-brand-500/10',
     highlightText: 'End-to-end milestone lifecycle with sensor data feeds & evidence upload.'
   }
 ];
@@ -85,62 +86,61 @@ export const FeatureCards = () => {
         </p>
       </div>
 
-      {/* 4 Feature Cards Grid */}
+      {/* 4 Feature Cards Grid with Interactive 3D Card Hover */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {WORKFLOW_CARDS.map((card) => {
           const Icon = card.icon;
 
           return (
-            <Link
+            <Interactive3DCard
               key={card.step}
-              to={card.link}
-              className={`group relative flex flex-col justify-between p-6 sm:p-7 bg-white/85 backdrop-blur-md rounded-3xl border border-slate-200/90 shadow-sm transition-all duration-350 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl hover:bg-white ${card.accentBorder} ${card.glowColor} overflow-hidden`}
-              style={{
-                transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)'
-              }}
+              maxTilt={5}
+              className="h-full rounded-3xl"
             >
-              {/* Subtle light sweep reflection */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-emerald-500/0 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              
-              {/* Top Accent Line on hover */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-500 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <Link
+                to={card.link}
+                className={`group relative flex flex-col justify-between h-full p-6 sm:p-7 bg-white/85 backdrop-blur-md rounded-3xl border border-slate-200/90 shadow-sm transition-all duration-300 ease-out hover:shadow-xl hover:bg-white ${card.accentBorder} ${card.glowColor} overflow-hidden`}
+              >
+                {/* Top Accent Line on hover */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-500 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-              <div>
-                {/* Header with Circular Icon and Step Badge */}
-                <div className="flex items-center justify-between mb-5">
-                  <div className={`w-13 h-13 rounded-2xl bg-gradient-to-br ${card.iconGradient} p-3 flex items-center justify-center text-white shadow-md shadow-emerald-700/15 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
-                    <Icon className="w-6 h-6" />
+                <div>
+                  {/* Header with Circular Icon and Step Badge */}
+                  <div className="flex items-center justify-between mb-5">
+                    <div className={`w-13 h-13 rounded-2xl bg-gradient-to-br ${card.iconGradient} p-3 flex items-center justify-center text-white shadow-md shadow-emerald-700/15 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <span className="font-mono text-xs font-bold text-slate-400 group-hover:text-brand-600 transition-colors">
+                      {card.step}
+                    </span>
                   </div>
-                  <span className="font-mono text-xs font-bold text-slate-400 group-hover:text-brand-600 transition-colors">
-                    {card.step}
-                  </span>
+
+                  {/* Card Title & Subtitle */}
+                  <h3 className="text-lg font-bold font-display text-slate-900 group-hover:text-brand-700 transition-colors flex items-center gap-1.5">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+                    {card.subtitle}
+                  </p>
+
+                  {/* Supporting Micro-Detail */}
+                  <p className="text-xs text-slate-400 mt-3 pt-3 border-t border-slate-100/90 leading-normal">
+                    {card.highlightText}
+                  </p>
                 </div>
 
-                {/* Card Title & Subtitle */}
-                <h3 className="text-lg font-bold font-display text-slate-900 group-hover:text-brand-700 transition-colors flex items-center gap-1.5">
-                  {card.title}
-                </h3>
-                <p className="text-sm text-slate-600 mt-2 leading-relaxed">
-                  {card.subtitle}
-                </p>
-
-                {/* Supporting Micro-Detail */}
-                <p className="text-xs text-slate-400 mt-3 pt-3 border-t border-slate-100/90 leading-normal">
-                  {card.highlightText}
-                </p>
-              </div>
-
-              {/* Bottom Interactive CTA Link */}
-              <div className="mt-6 pt-2 flex items-center justify-between">
-                <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${card.tagColor}`}>
-                  {card.tag}
-                </span>
-                <span className="inline-flex items-center gap-1 text-xs font-bold text-brand-700 group-hover:text-brand-800 transition-colors">
-                  Explore
-                  <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform duration-300" />
-                </span>
-              </div>
-            </Link>
+                {/* Bottom Interactive CTA Link */}
+                <div className="mt-6 pt-2 flex items-center justify-between">
+                  <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${card.tagColor}`}>
+                    {card.tag}
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-xs font-bold text-brand-700 group-hover:text-brand-800 transition-colors">
+                    Explore
+                    <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform duration-300" />
+                  </span>
+                </div>
+              </Link>
+            </Interactive3DCard>
           );
         })}
       </div>

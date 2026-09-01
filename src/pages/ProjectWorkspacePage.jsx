@@ -15,6 +15,7 @@ import { KanbanBoard } from '../components/projects/KanbanBoard';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { StatusBadge } from '../components/ui/StatusBadge';
+import { EmptyState } from '../components/ui/EmptyState';
 import confetti from 'canvas-confetti';
 import { 
   Rocket, 
@@ -143,6 +144,22 @@ export const ProjectWorkspacePage = () => {
       <div className="max-w-6xl mx-auto px-4 py-20 text-center text-slate-500">
         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-brand-500 mx-auto mb-4"></div>
         Loading Project Workspace...
+      </div>
+    );
+  }
+
+  if (!project) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-16">
+        <EmptyState
+          icon={Rocket}
+          title="No Active Project Found"
+          description="Interesting civic problems are waiting to be solved. Explore an open challenge in Jharkhand and propose your innovative solution."
+          actionText="Explore Challenges"
+          actionLink="/challenges"
+          secondaryActionText="Report a Problem"
+          secondaryActionLink="/report-problem"
+        />
       </div>
     );
   }
