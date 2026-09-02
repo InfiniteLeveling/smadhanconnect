@@ -50,43 +50,45 @@
 
 ```mermaid
 flowchart TD
-    subgraph Boot["1. Initial App Boot & Build Engine"]
-        Vite["Vite 8 Build & Dev Server (HMR)"] --> HTML["index.html (Entry Root #root)"]
-        HTML --> MainJSX["src/main.jsx"]
-        MainJSX --> Tailwind["Tailwind CSS v3 + PostCSS Styling"]
-        MainJSX --> AppJSX["src/App.jsx (Root Router Provider)"]
+    subgraph Boot["1. Initial App Boot & Build Engine (Vite 8 + React 19)"]
+        Vite["⚙️ Vite 8 Bundler<br/>[Hot Module Replacement HMR]"] --> HTML["📄 index.html<br/>[Mount Point #root]"]
+        HTML --> MainJSX["🚀 src/main.jsx<br/>[React 19 createRoot]"]
+        MainJSX --> Tailwind["🎨 Tailwind CSS v3 + PostCSS<br/>[Design Tokens & Glassmorphism]"]
+        MainJSX --> AppJSX["📦 src/App.jsx<br/>[Root Router & Modal Layer]"]
     end
 
-    subgraph StateAndAuth["2. Global Context & Auth Layer"]
-        AppJSX --> AuthProvider["src/context/AuthContext.jsx"]
-        AuthProvider --> SupaAuthClient["@supabase/supabase-js Client"]
-        SupaAuthClient -->|Session Listener| UserProfile["Sync User Profile & Role"]
+    subgraph StateAndAuth["2. Global Context & Auth Layer (Supabase Auth + JWT)"]
+        AppJSX --> AuthProvider["🔐 src/context/AuthContext.jsx<br/>[React Context API + Hooks]"]
+        AuthProvider --> SupaAuthClient["⚡ @supabase/supabase-js<br/>[OAuth 2.0 Google & GitHub Client]"]
+        SupaAuthClient -->|Session Event Listener| UserProfile["👤 syncUserProfile()<br/>[Local Storage + Memory State]"]
         UserProfile --> RoleCheck{Role Assigned?}
-        RoleCheck -- No --> RoleModal["src/components/modals/RoleSelectionModal.jsx"]
-        RoleCheck -- Yes --> RouterLayer["React Router v7 Navigation Engine"]
+        RoleCheck -- No --> RoleModal["🪟 RoleSelectionModal.jsx<br/>[5-Role Onboarding Modal]"]
+        RoleCheck -- Yes --> RouterLayer["🧭 React Router v7<br/>[BrowserRouter & Route Guards]"]
     end
 
     subgraph RoutingAndPages["3. Pages & Dynamic Route Guards"]
-        RouterLayer --> Page_Home["/ -> HomePage (HeroLoginCard, Stats)"]
-        RouterLayer --> Page_Workspace["/workspace -> Role Workspace"]
-        RouterLayer --> Page_Messages["/messages -> MessagingPage (Chat + Samadhan AI)"]
-        RouterLayer --> Page_Admin["/admin -> AdminDashboardPage (Super Admin Guard)"]
-        RouterLayer --> Page_Challenges["/challenges -> ChallengeExplorerPage"]
+        RouterLayer --> Page_Home["🏠 / -> HomePage.jsx<br/>[HeroLoginCard + Stats Grid]"]
+        RouterLayer --> Page_Workspace["💼 /workspace -> WorkspacePage.jsx<br/>[Citizen / Student / Nodal Dashboards]"]
+        RouterLayer --> Page_Messages["💬 /messages -> MessagingPage.jsx<br/>[Pinned Samadhan AI + Peer Chat]"]
+        RouterLayer --> Page_Admin["👑 /admin -> AdminDashboardPage.jsx<br/>[Super Admin RBAC Guard]"]
+        RouterLayer --> Page_Challenges["🎯 /challenges -> ChallengeExplorerPage.jsx<br/>[Filterable Public Challenge Feed]"]
     end
 
-    subgraph UIComponents["4. Specialized UI Subsystems"]
-        Page_Messages --> ConvSidebar["Sidebar: Pinned Samadhan AI + Peer Channels"]
-        Page_Messages --> SuggestedBar["SuggestedDomainsBar (24+ Domain Prompt Chips)"]
-        Page_Messages --> MD_Renderer["MarkdownMessage (Bold, Lists, Code, Links)"]
-        Page_Workspace --> Confetti["Canvas Confetti (Milestone Feedback)"]
-        Page_Workspace --> DataService["src/services/dataService.js (CRUD + Fallback)"]
+    subgraph UIComponents["4. Specialized UI Subsystems & Micro-Interactions"]
+        Page_Messages --> ConvSidebar["📋 Conversation Sidebar<br/>[Sparkle Bot Avatar + Status Badges]"]
+        Page_Messages --> SuggestedBar["🏷️ SuggestedDomainsBar.jsx<br/>[24+ Topic Prompt Chips]"]
+        Page_Messages --> MD_Renderer["📝 MarkdownMessage.jsx<br/>[RegExp Parser: Bold, Lists, Code, Links]"]
+        Page_Workspace --> Confetti["🎉 Canvas Confetti (canvas-confetti)<br/>[Milestone Completion Particles]"]
+        Page_Workspace --> DataService["🗄️ src/services/dataService.js<br/>[Supabase CRUD + Mock Fallback]"]
+        Page_Home --> Lucide["✨ lucide-react<br/>[Accessible SVG Vector Icons]"]
     end
 
-    subgraph UserFeedback["5. User Interaction & Micro-Animations"]
-        MD_Renderer --> DOMUpdate["Virtual DOM React 19 Reconciliation"]
+    subgraph UserFeedback["5. Virtual DOM Reconciliation"]
+        MD_Renderer --> DOMUpdate["⚡ React 19 Virtual DOM<br/>[Concurrent Renderer]"]
         Confetti --> DOMUpdate
         DataService --> DOMUpdate
-        DOMUpdate --> UserScreen([Interactive Citizen / Innovator UI])
+        Lucide --> DOMUpdate
+        DOMUpdate --> UserScreen([🖥️ Interactive Citizen / Innovator UI])
     end
 ```
 
@@ -96,54 +98,55 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    subgraph RequestIntake["1. HTTP Request Gateway"]
-        ClientReq["Frontend POST /api/chat Request"] --> GatewaySelect{Environment Mode}
-        GatewaySelect -- Production --> VercelFunc["api/chat.js (Vercel Serverless Function)"]
-        GatewaySelect -- Local Dev --> ViteMiddleware["vite.config.js (Dev Server Middleware)"]
-        GatewaySelect -- Standalone --> ExpressApp["server/index.js (Express Server)"]
+    subgraph RequestIntake["1. HTTP Request Gateway (Vercel Serverless / Express)"]
+        ClientReq["🌐 Frontend POST /api/chat Request<br/>[Fetch API with JSON Payload]"] --> GatewaySelect{Environment Gateway}
+        GatewaySelect -- Production (Vercel) --> VercelFunc["⚡ api/chat.js<br/>[Vercel Serverless Node.js Runtime]"]
+        GatewaySelect -- Local Dev (Vite) --> ViteMiddleware["🛠️ vite.config.js<br/>[Custom Dev Server Middleware Plugin]"]
+        GatewaySelect -- Standalone Server --> ExpressApp["🚀 server/index.js<br/>[Node.js Express + cors + dotenv]"]
     end
 
-    subgraph SecurityChecks["2. Security & Request Validation"]
-        VercelFunc --> CORS["CORS & Method Validator (POST only)"]
+    subgraph SecurityChecks["2. Security & Request Validation (Zero Secret Exposure)"]
+        VercelFunc --> CORS["🛡️ CORS Headers & Method Guard<br/>[Allow: POST, OPTIONS | Deny: GET/PUT]"]
         ViteMiddleware --> CORS
         ExpressApp --> CORS
-        CORS --> InputSanitizer["Validate Body & Truncate History to last 10 messages"]
-        InputSanitizer --> SecretReader["Read process.env.GEMINI_API_KEY (Server-Side Only)"]
+        CORS --> InputSanitizer["🧹 Input Sanitizer & History Truncator<br/>[Validates message string & limits history to last 10]"]
+        InputSanitizer --> SecretReader["🔑 Server Environment Loader<br/>[process.env.GEMINI_API_KEY (Server Only)]"]
     end
 
-    subgraph ExecutionRouter["3. AI & Knowledge Execution Router"]
-        SecretReader --> KeyCheck{API Key Present?}
+    subgraph ExecutionRouter["3. AI & Knowledge Execution Router (@google/genai)"]
+        SecretReader --> KeyCheck{GEMINI_API_KEY<br/>Configured & Valid?}
         
-        KeyCheck -- YES --> GoogleSDK["Initialize @google/genai GoogleGenAI SDK"]
-        KeyCheck -- NO / Empty --> LocalKnowledge["Intelligent Civic Knowledge Engine"]
+        KeyCheck -- YES --> GoogleSDK["🤖 GoogleGenAI Client<br/>[SDK: @google/genai v2.20.0]"]
+        KeyCheck -- NO / Empty / Quota Limit --> LocalKnowledge["📚 Intelligent Civic Knowledge Engine<br/>[25-Domain Heuristic Database]"]
         
-        GoogleSDK --> PromptLoader["Load System Instructions from server/config/chatbotPrompt.js"]
-        PromptLoader --> ModelCascade["Multi-Model Failover Cascade"]
+        GoogleSDK --> PromptLoader["📜 chatbotPrompt.js<br/>[SAMADHAN_SYSTEM_PROMPT with 25 Domains]"]
+        PromptLoader --> ModelCascade["🔄 Multi-Model Failover Cascade<br/>[Promise.race with 30s Abort Timeout]"]
     end
 
     subgraph ModelCascadeChain["4. Multi-Model Cascade & Resilience"]
-        ModelCascade --> Model1["Try 1: models/gemini-2.5-pro"]
-        Model1 -- 404/429/Timeout --> Model2["Try 2: models/gemini-2.5-flash"]
-        Model2 -- 404/429/Timeout --> Model3["Try 3: models/gemini-3.1-pro-preview"]
+        ModelCascade --> Model1["1️⃣ models/gemini-2.5-pro<br/>[Deep Reasoning Model]"]
+        Model1 -- 404/429/Timeout --> Model2["2️⃣ models/gemini-2.5-flash<br/>[High-Speed Fallback Model]"]
+        Model2 -- 404/429/Timeout --> Model3["3️⃣ models/gemini-3.1-pro-preview<br/>[Next-Gen Preview Fallback]"]
         Model3 -- Quota Exhausted --> LocalKnowledge
         
-        Model1 -- Success --> CleanResponse["Extract Candidates & Clean Output"]
-        Model2 -- Success --> CleanResponse
-        Model3 -- Success --> CleanResponse
+        Model1 -- Success (HTTP 200) --> CleanResponse["✨ Candidate Extraction & Trimming<br/>[response.text]"]
+        Model2 -- Success (HTTP 200) --> CleanResponse
+        Model3 -- Success (HTTP 200) --> CleanResponse
         
-        LocalKnowledge --> DomainFilter{Is In-Domain?}
-        DomainFilter -- YES --> GenSteps["Generate Step-by-Step Civic Steps"]
-        DomainFilter -- NO --> OutOfDomain["Return Canned Refusal: 'I am Samadhan AI...'"]
+        LocalKnowledge --> DomainFilter{Domain Filter Check}
+        DomainFilter -- In-Domain (Agriculture, Power, ID) --> GenSteps["📋 Generate Structured Civic Guidance<br/>[Verified Schemes & Steps]"]
+        DomainFilter -- Out-of-Domain (Jokes, Movies, Games) --> OutOfDomain["🚫 Canned Refusal String<br/>[OUT_OF_DOMAIN_RESPONSE]"]
         
         GenSteps --> CleanResponse
         OutOfDomain --> CleanResponse
     end
 
-    subgraph ResponseDispatch["5. Response Serialization"]
-        CleanResponse --> JSONPayload["Serialize JSON: { reply: '...', status: 'success' }"]
-        JSONPayload --> HTTP200["Send HTTP 200 to Client"]
+    subgraph ResponseDispatch["5. Response Serialization & Delivery"]
+        CleanResponse --> JSONPayload["📦 JSON Serializer<br/>[{ reply: '...', status: 'success' }]"]
+        JSONPayload --> HTTP200["📤 HTTP 200 OK<br/>[Content-Type: application/json]"]
     end
 ```
+
 
 ---
 
