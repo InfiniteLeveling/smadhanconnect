@@ -170,10 +170,10 @@ export const Navbar = () => {
               </Link>
             </div>
 
-            {/* RIGHT CONTROLS: REPORT PROBLEM + NOTIFICATIONS + SIGN IN / USER PROFILE */}
+            {/* RIGHT CONTROLS: REPORT PROBLEM + USER PROFILE / SIGN IN + NOTIFICATION BELL */}
             <div className="flex items-center gap-2 sm:gap-3">
               
-              {/* Report Problem CTA Button */}
+              {/* 1. Report Problem CTA Button */}
               <Link to="/report-problem">
                 <button className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-brand-700 via-emerald-600 to-teal-600 shadow-md shadow-brand-600/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 cursor-pointer">
                   <PlusCircle className="w-4 h-4" />
@@ -181,78 +181,7 @@ export const Navbar = () => {
                 </button>
               </Link>
 
-              {/* Notification Bell Dropdown */}
-              <div className="relative">
-                <Tooltip text="Notifications" position="bottom">
-                  <button
-                    onClick={() => {
-                      setShowNotifDropdown(!showNotifDropdown);
-                      if (!showNotifDropdown && unreadCount > 0) {
-                        handleMarkAllAsRead();
-                      }
-                    }}
-                    className="relative p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100/80 transition-colors cursor-pointer"
-                    aria-label="Notifications"
-                  >
-                    <Bell className="w-4 h-4" />
-                    {unreadCount > 0 && (
-                      <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white animate-pulse" />
-                    )}
-                  </button>
-                </Tooltip>
-
-                {showNotifDropdown && (
-                  <div
-                    onMouseLeave={() => setShowNotifDropdown(false)}
-                    className="absolute right-0 mt-2 w-80 sm:w-96 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-200/90 p-4 space-y-3 z-50 animate-in fade-in zoom-in-95 text-left"
-                  >
-                    <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-slate-900">Notifications</span>
-                        {unreadCount > 0 && (
-                          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-rose-100 text-rose-700 font-mono font-bold">
-                            {unreadCount} new
-                          </span>
-                        )}
-                      </div>
-                      <button
-                        onClick={handleMarkAllAsRead}
-                        className="text-[11px] text-brand-600 hover:text-brand-800 font-bold flex items-center gap-1 cursor-pointer"
-                      >
-                        <CheckCheck className="w-3 h-3" />
-                        <span>Mark read</span>
-                      </button>
-                    </div>
-
-                    <div className="space-y-2 max-h-72 overflow-y-auto no-scrollbar">
-                      {notifications.length === 0 ? (
-                        <p className="text-xs text-slate-400 text-center py-6">No notifications</p>
-                      ) : (
-                        notifications.map((n) => (
-                          <Link
-                            key={n.id}
-                            to={n.link || '#'}
-                            onClick={() => setShowNotifDropdown(false)}
-                            className={`block p-3 rounded-xl border text-xs transition-colors ${
-                              !n.is_read
-                                ? 'bg-brand-50/60 border-brand-200/70 text-slate-900'
-                                : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50'
-                            }`}
-                          >
-                            <p className="font-bold">{n.title}</p>
-                            <p className="text-slate-500 mt-0.5 leading-relaxed">{n.content}</p>
-                            <span className="text-[10px] text-slate-400 block mt-1.5">
-                              {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            </span>
-                          </Link>
-                        ))
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* USER AUTH & PERSONA PROFILE DROPDOWN */}
+              {/* 2. USER AUTH & PERSONA PROFILE DROPDOWN / SIGN IN */}
               {profile ? (
                 <div className="relative">
                   <button
@@ -471,6 +400,77 @@ export const Navbar = () => {
                 </button>
               )}
 
+              {/* 3. Notification Bell Dropdown (Shifted to the Far Right End) */}
+              <div className="relative">
+                <Tooltip text="Notifications" position="bottom">
+                  <button
+                    onClick={() => {
+                      setShowNotifDropdown(!showNotifDropdown);
+                      if (!showNotifDropdown && unreadCount > 0) {
+                        handleMarkAllAsRead();
+                      }
+                    }}
+                    className="relative p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100/80 transition-colors cursor-pointer"
+                    aria-label="Notifications"
+                  >
+                    <Bell className="w-4 h-4" />
+                    {unreadCount > 0 && (
+                      <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white animate-pulse" />
+                    )}
+                  </button>
+                </Tooltip>
+
+                {showNotifDropdown && (
+                  <div
+                    onMouseLeave={() => setShowNotifDropdown(false)}
+                    className="absolute right-0 mt-2 w-80 sm:w-96 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-200/90 p-4 space-y-3 z-50 animate-in fade-in zoom-in-95 text-left"
+                  >
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-slate-900">Notifications</span>
+                        {unreadCount > 0 && (
+                          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-rose-100 text-rose-700 font-mono font-bold">
+                            {unreadCount} new
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        onClick={handleMarkAllAsRead}
+                        className="text-[11px] text-brand-600 hover:text-brand-800 font-bold flex items-center gap-1 cursor-pointer"
+                      >
+                        <CheckCheck className="w-3 h-3" />
+                        <span>Mark read</span>
+                      </button>
+                    </div>
+
+                    <div className="space-y-2 max-h-72 overflow-y-auto no-scrollbar">
+                      {notifications.length === 0 ? (
+                        <p className="text-xs text-slate-400 text-center py-6">No notifications</p>
+                      ) : (
+                        notifications.map((n) => (
+                          <Link
+                            key={n.id}
+                            to={n.link || '#'}
+                            onClick={() => setShowNotifDropdown(false)}
+                            className={`block p-3 rounded-xl border text-xs transition-colors ${
+                              !n.is_read
+                                ? 'bg-brand-50/60 border-brand-200/70 text-slate-900'
+                                : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50'
+                            }`}
+                          >
+                            <p className="font-bold">{n.title}</p>
+                            <p className="text-slate-500 mt-0.5 leading-relaxed">{n.content}</p>
+                            <span className="text-[10px] text-slate-400 block mt-1.5">
+                              {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </Link>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Mobile Menu Trigger */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -480,6 +480,7 @@ export const Navbar = () => {
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
+
 
           </div>
         </div>
