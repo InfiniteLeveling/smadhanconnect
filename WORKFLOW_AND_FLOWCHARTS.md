@@ -1,6 +1,6 @@
-# Samadhan.Connect — Full Workflows & Flow Charts Specification
+# Samadhan.Connect — Full Workflows, Technology Pipelines & Flow Charts
 
-This document provides a comprehensive breakdown of all operational, technical, and algorithmic workflows in **Samadhan.Connect**, accompanied by Mermaid flow charts.
+This document provides a comprehensive breakdown of all operational, technical, frontend, and backend technology workflows in **Samadhan.Connect**, accompanied by Mermaid flow charts.
 
 ---
 
@@ -45,7 +45,112 @@ sequenceDiagram
 
 ---
 
-## 2. End-to-End System Architecture Data Flow
+## 2. Frontend Technology Flowchart & Component Lifecycle
+
+This flowchart illustrates how the **React 19 + Vite 8 SPA** initializes, manages client routing with **React Router v7**, handles global **AuthContext**, renders **Tailwind CSS v3** design tokens, and streams Markdown with micro-interactions.
+
+```mermaid
+flowchart TD
+    subgraph Boot["1. Initial App Boot & Build Engine"]
+        Vite["Vite 8 Build & Dev Server (HMR)"] --> HTML["index.html (Entry Root #root)"]
+        HTML --> MainJSX["src/main.jsx"]
+        MainJSX --> Tailwind["Tailwind CSS v3 + PostCSS Styling"]
+        MainJSX --> AppJSX["src/App.jsx (Root Router Provider)"]
+    end
+
+    subgraph StateAndAuth["2. Global Context & Auth Layer"]
+        AppJSX --> AuthProvider["src/context/AuthContext.jsx"]
+        AuthProvider --> SupaAuthClient["@supabase/supabase-js Client"]
+        SupaAuthClient -->|Session Listener| UserProfile["Sync User Profile & Role"]
+        UserProfile --> RoleCheck{Role Assigned?}
+        RoleCheck -- No --> RoleModal["src/components/modals/RoleSelectionModal.jsx"]
+        RoleCheck -- Yes --> RouterLayer["React Router v7 Navigation Engine"]
+    end
+
+    subgraph RoutingAndPages["3. Pages & Dynamic Route Guards"]
+        RouterLayer --> Page_Home["/ -> HomePage (HeroLoginCard, Stats, Challenges)"]
+        RouterLayer --> Page_Workspace["/workspace -> Role Workspace (Citizen/Student/Nodal)"]
+        RouterLayer --> Page_Messages["/messages -> MessagingPage (Live Chat + Samadhan AI)"]
+        RouterLayer --> Page_Admin["/admin -> AdminDashboardPage (Super Admin Guard)"]
+        RouterLayer --> Page_Challenges["/challenges -> ChallengeExplorerPage"]
+    end
+
+    subgraph UIComponents["4. Specialized UI & Rendering Subsystems"]
+        Page_Messages --> ConvSidebar["Sidebar: Pinned Samadhan AI + Peer Channels"]
+        Page_Messages --> SuggestedBar["SuggestedDomainsBar (24+ Domain Prompt Chips)"]
+        Page_Messages --> MD_Renderer["MarkdownMessage (Bold, Lists, Code, Links)"]
+        Page_Workspace --> Confetti["Canvas Confetti (Milestone Feedback)"]
+        Page_Workspace --> DataService["src/services/dataService.js (CRUD + Fallback)"]
+    end
+
+    subgraph UserFeedback["5. User Interaction & Micro-Animations"]
+        MD_Renderer --> DOMUpdate["Virtual DOM React 19 Reconciliation"]
+        Confetti --> DOMUpdate
+        DataService --> DOMUpdate
+        DOMUpdate --> UserScreen([Interactive Citizen / Innovator UI])
+    end
+```
+
+---
+
+## 3. Backend Technology Flowchart & Request Execution Pipeline
+
+This flowchart outlines the **Vercel Serverless / Node.js API Gateway** architecture, secret isolation, rate-limiting, and dual-engine AI failover mechanism.
+
+```mermaid
+flowchart TD
+    subgraph RequestIntake["1. HTTP Request Gateway"]
+        ClientReq["Frontend POST /api/chat Request"] --> GatewaySelect{Environment Mode}
+        GatewaySelect -- Production --> VercelFunc["api/chat.js (Vercel Serverless Function)"]
+        GatewaySelect -- Local Dev --> ViteMiddleware["vite.config.js (Dev Server Middleware)"]
+        GatewaySelect -- Standalone --> ExpressApp["server/index.js (Express Server)"]
+    end
+
+    subgraph SecurityChecks["2. Security & Request Validation"]
+        VercelFunc --> CORS["CORS & Method Validator (POST only)"]
+        ViteMiddleware --> CORS
+        ExpressApp --> CORS
+        CORS --> InputSanitizer["Validate Body & Truncate History to last 10 messages"]
+        InputSanitizer --> SecretReader["Read process.env.GEMINI_API_KEY (Server-Side Only)"]
+    end
+
+    subgraph ExecutionRouter["3. AI & Knowledge Execution Router"]
+        SecretReader --> KeyCheck{API Key Present?}
+        
+        KeyCheck -- YES --> GoogleSDK["Initialize @google/genai GoogleGenAI SDK"]
+        KeyCheck -- NO / Empty --> LocalKnowledge["Intelligent Civic Knowledge Engine"]
+        
+        GoogleSDK --> PromptLoader["Load System Instructions from server/config/chatbotPrompt.js"]
+        PromptLoader --> ModelCascade["Multi-Model Failover Cascade"]
+    end
+
+    subgraph ModelCascadeChain["4. Multi-Model Cascade & Resilience"]
+        ModelCascade --> Model1["Try 1: models/gemini-2.5-pro"]
+        Model1 -- 404/429/Timeout --> Model2["Try 2: models/gemini-2.5-flash"]
+        Model2 -- 404/429/Timeout --> Model3["Try 3: models/gemini-3.1-pro-preview"]
+        Model3 -- Quota Exhausted --> LocalKnowledge
+        
+        Model1 -- Success --> CleanResponse["Extract Candidates & Clean Output"]
+        Model2 -- Success --> CleanResponse
+        Model3 -- Success --> CleanResponse
+        
+        LocalKnowledge --> DomainFilter{Is In-Domain?}
+        DomainFilter -- YES --> GenSteps["Generate Step-by-Step Civic Steps"]
+        DomainFilter -- NO --> OutOfDomain["Return Canned Refusal: 'I am Samadhan AI...'"]
+        
+        GenSteps --> CleanResponse
+        OutOfDomain --> CleanResponse
+    end
+
+    subgraph ResponseDispatch["5. Response Serialization"]
+        CleanResponse --> JSONPayload["Serialize JSON: { reply: '...', status: 'success' }"]
+        JSONPayload --> HTTP200["Send HTTP 200 to Client"]
+    end
+```
+
+---
+
+## 4. End-to-End System Architecture Data Flow
 
 ```mermaid
 flowchart TD
@@ -100,7 +205,7 @@ flowchart TD
 
 ---
 
-## 3. User Authentication & Role Onboarding Flow
+## 5. User Authentication & Role Onboarding Flow
 
 ```mermaid
 flowchart TD
@@ -130,7 +235,7 @@ flowchart TD
 
 ---
 
-## 4. Samadhan AI 25-Domain Decision Engine
+## 6. Samadhan AI 25-Domain Decision Engine
 
 ```mermaid
 flowchart TD
@@ -166,7 +271,7 @@ flowchart TD
 
 ---
 
-## 5. Problem Reporting to CSR Funding Pipeline
+## 7. Problem Reporting to CSR Funding Pipeline
 
 ```mermaid
 flowchart LR
