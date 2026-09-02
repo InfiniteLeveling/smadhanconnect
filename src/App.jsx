@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { SmoothScrollProvider } from './context/SmoothScrollProvider';
 import { RoleSelectionModal } from './components/auth/RoleSelectionModal';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -23,58 +24,61 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans relative">
-          
-          {/* Top Scroll Reading Progress Indicator */}
-          <ScrollProgress />
+        <SmoothScrollProvider>
+          <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans relative">
+            
+            {/* Top Scroll Reading Progress Indicator */}
+            <ScrollProgress />
 
-          {/* Main Global Navigation Bar */}
-          <Navbar />
+            {/* Main Global Navigation Bar */}
+            <Navbar />
 
-          {/* Global First-Time Role Selection Onboarding Modal */}
-          <RoleSelectionModal />
+            {/* Global First-Time Role Selection Onboarding Modal */}
+            <RoleSelectionModal />
 
-          <main className="flex-1">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/challenges" element={<ChallengesPage />} />
-              <Route path="/challenges/:id" element={<ChallengeDetailPage />} />
-              <Route path="/projects/:id" element={<ProjectWorkspacePage />} />
-              <Route path="/projects" element={<ProjectWorkspacePage />} />
-              <Route path="/universities" element={<UniversitiesPage />} />
-              <Route path="/industries" element={<IndustriesPage />} />
-              <Route path="/analytics" element={<AnalyticsPage />} />
-              <Route path="/messages" element={<MessagingPage />} />
-              <Route path="/report-problem" element={<ReportProblemPage />} />
-              <Route 
-                path="/dashboard/government" 
-                element={
-                  <RoleGuard allowedRoles={['GOVERNMENT', 'ADMIN']}>
-                    <GovernmentDashboard />
-                  </RoleGuard>
-                } 
-              />
-              <Route 
-                path="/admin" 
-                element={
-                  <RoleGuard allowedRoles={['ADMIN']}>
-                    <AdminDashboardPage />
-                  </RoleGuard>
-                } 
-              />
-            </Routes>
-          </main>
+            <main className="flex-1">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/challenges" element={<ChallengesPage />} />
+                <Route path="/challenges/:id" element={<ChallengeDetailPage />} />
+                <Route path="/projects/:id" element={<ProjectWorkspacePage />} />
+                <Route path="/projects" element={<ProjectWorkspacePage />} />
+                <Route path="/universities" element={<UniversitiesPage />} />
+                <Route path="/industries" element={<IndustriesPage />} />
+                <Route path="/analytics" element={<AnalyticsPage />} />
+                <Route path="/messages" element={<MessagingPage />} />
+                <Route path="/report-problem" element={<ReportProblemPage />} />
+                <Route 
+                  path="/dashboard/government" 
+                  element={
+                    <RoleGuard allowedRoles={['GOVERNMENT', 'ADMIN']}>
+                      <GovernmentDashboard />
+                    </RoleGuard>
+                  } 
+                />
+                <Route 
+                  path="/admin" 
+                  element={
+                    <RoleGuard allowedRoles={['ADMIN']}>
+                      <AdminDashboardPage />
+                    </RoleGuard>
+                  } 
+                />
+              </Routes>
+            </main>
 
-          {/* Floating Scroll To Top Interactive Button */}
-          <ScrollToTopButton />
+            {/* Floating Scroll To Top Interactive Button */}
+            <ScrollToTopButton />
 
-          {/* Global Civic Tech Footer */}
-          <Footer />
-        </div>
+            {/* Global Civic Tech Footer */}
+            <Footer />
+          </div>
+        </SmoothScrollProvider>
       </AuthProvider>
     </Router>
   );
 }
+
 
 
 

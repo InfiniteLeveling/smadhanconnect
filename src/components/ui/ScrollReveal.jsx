@@ -4,8 +4,9 @@ export const ScrollReveal = ({
   children, 
   className = '', 
   delay = 0,
-  direction = 'up', // 'up', 'down', 'left', 'right', 'fade'
-  threshold = 0.15,
+  duration = 800,
+  direction = 'up', // 'up', 'down', 'left', 'right', 'fade', 'scale'
+  threshold = 0.12,
   once = true 
 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -25,7 +26,7 @@ export const ScrollReveal = ({
       },
       {
         threshold,
-        rootMargin: '0px 0px -40px 0px'
+        rootMargin: '0px 0px -50px 0px'
       }
     );
 
@@ -43,29 +44,35 @@ export const ScrollReveal = ({
 
   const getTransformClasses = () => {
     if (isVisible) {
-      return 'opacity-100 translate-x-0 translate-y-0 scale-100';
+      return 'opacity-100 translate-x-0 translate-y-0 scale-100 filter-none';
     }
 
     switch (direction) {
       case 'up':
-        return 'opacity-0 translate-y-8 scale-[0.99]';
+        return 'opacity-0 translate-y-10 scale-[0.985]';
       case 'down':
-        return 'opacity-0 -translate-y-8 scale-[0.99]';
+        return 'opacity-0 -translate-y-10 scale-[0.985]';
       case 'left':
-        return 'opacity-0 translate-x-8 scale-[0.99]';
+        return 'opacity-0 translate-x-10 scale-[0.985]';
       case 'right':
-        return 'opacity-0 -translate-x-8 scale-[0.99]';
+        return 'opacity-0 -translate-x-10 scale-[0.985]';
+      case 'scale':
+        return 'opacity-0 scale-95';
       case 'fade':
       default:
-        return 'opacity-0 scale-[0.98]';
+        return 'opacity-0 scale-[0.99]';
     }
   };
 
   return (
     <div
       ref={domRef}
-      style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ease-out will-change-transform ${getTransformClasses()} ${className}`}
+      style={{ 
+        transitionDelay: `${delay}ms`,
+        transitionDuration: `${duration}ms`,
+        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)'
+      }}
+      className={`transition-all will-change-transform ${getTransformClasses()} ${className}`}
     >
       {children}
     </div>
