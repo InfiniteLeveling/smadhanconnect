@@ -56,7 +56,6 @@ export const Navbar = () => {
 
   const [notifications, setNotifications] = useState([]);
   const [showNotifDropdown, setShowNotifDropdown] = useState(false);
-  const [showSecondaryMenu, setShowSecondaryMenu] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showDemoSwitch, setShowDemoSwitch] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -98,8 +97,8 @@ export const Navbar = () => {
   const isGovernment = profile?.role === 'GOVERNMENT';
   const roleMeta = getRoleTheme(profile?.role);
 
-  // Primary Navigation Links (Pinned Samadhan AI)
-  const primaryNavLinks = [
+  // Mini Sub-Navbar Horizontal Navigation Tabs
+  const subNavLinks = [
     {
       name: 'Challenges',
       path: '/challenges',
@@ -114,48 +113,48 @@ export const Navbar = () => {
       badge: 'AI'
     },
     {
-      name: 'Workspace',
+      name: '5-Phase Workspace',
       path: '/projects/proj-001',
       icon: Rocket,
-      tooltip: '5-Phase Prototype Kanban & Telemetry Lab'
+      tooltip: 'Prototype Kanban & Telemetry Lab'
     },
     {
-      name: 'Analytics',
+      name: 'Analytics & Insights',
       path: '/analytics',
       icon: TrendingUp,
       tooltip: 'District-level metrics, resolution SLA & density trends'
-    }
-  ];
-
-  // Secondary Ecosystem Hub Links
-  const secondaryNavLinks = [
+    },
     {
       name: 'Universities & Labs',
       path: '/universities',
       icon: GraduationCap,
-      description: 'Academic R&D cells, mentoring & patents'
+      tooltip: 'Academic R&D cells, faculty mentoring & state patents'
     },
     {
       name: 'Industry CSR Grants',
       path: '/industries',
       icon: Building2,
-      description: 'Corporate funding & commercial sandbox pilots'
+      tooltip: 'Corporate funding & commercial sandbox pilots'
     }
   ];
 
   return (
     <>
       <nav className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-slate-200/80 shadow-xs transition-all duration-200">
+        
+        {/* =================================================================== */}
+        {/* 1. MAIN TOP NAVBAR (LOGO + REPORT PROBLEM + SIGN IN / USER PROFILE)  */}
+        {/* =================================================================== */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             
-            {/* 1. BRAND LOGO */}
+            {/* BRAND LOGO & TITLE */}
             <div className="flex items-center gap-3">
               <Link to="/" className="flex items-center gap-2.5 group">
                 <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-700 via-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-brand-600/20 group-hover:scale-105 group-hover:shadow-brand-600/30 transition-all duration-200">
                   <ShieldCheck className="w-6 h-6 stroke-[2.2]" />
                 </div>
-                <div>
+                <div className="text-left">
                   <div className="flex items-center gap-1.5">
                     <span className="font-extrabold text-slate-900 tracking-tight text-base sm:text-lg font-display group-hover:text-brand-700 transition-colors">
                       Samadhan<span className="text-brand-600">.Connect</span>
@@ -171,141 +170,20 @@ export const Navbar = () => {
               </Link>
             </div>
 
-            {/* 2. DESKTOP PRIMARY NAVIGATION LINKS */}
-            <div className="hidden lg:flex items-center gap-1.5">
-              {primaryNavLinks.map((link) => {
-                const Icon = link.icon;
-                const isActive = location.pathname === link.path;
-                return (
-                  <Tooltip key={link.path} text={link.tooltip} position="bottom">
-                    <Link
-                      to={link.path}
-                      className={`relative flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-150 ${
-                        isActive
-                          ? 'bg-brand-50 text-brand-800 font-extrabold shadow-2xs'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
-                      }`}
-                    >
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-brand-700' : 'text-slate-500'}`} />
-                      <span>{link.name}</span>
-                      
-                      {/* Special AI Badge for Chatbot */}
-                      {link.badge && (
-                        <span className="text-[9px] px-1.5 py-0.2 rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-mono font-bold shadow-2xs animate-pulse">
-                          {link.badge}
-                        </span>
-                      )}
-
-                      {/* Active Indicator Dot */}
-                      {isActive && (
-                        <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-brand-600" />
-                      )}
-                    </Link>
-                  </Tooltip>
-                );
-              })}
-
-              {/* Ecosystem Dropdown Menu */}
-              <div 
-                className="relative"
-                onMouseEnter={() => setShowSecondaryMenu(true)}
-                onMouseLeave={() => setShowSecondaryMenu(false)}
-              >
-                <button
-                  onClick={() => setShowSecondaryMenu(!showSecondaryMenu)}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                    location.pathname.startsWith('/universities') || location.pathname.startsWith('/industries')
-                      ? 'bg-brand-50 text-brand-800'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
-                  }`}
-                >
-                  <span>Ecosystem</span>
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-150 ${showSecondaryMenu ? 'rotate-180' : ''}`} />
-                </button>
-
-                {showSecondaryMenu && (
-                  <div className="absolute top-full left-0 mt-1 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-200/90 p-2 space-y-1 z-50 animate-in fade-in zoom-in-95">
-                    {secondaryNavLinks.map((item) => {
-                      const Icon = item.icon;
-                      const isActive = location.pathname === item.path;
-                      return (
-                        <Link
-                          key={item.path}
-                          to={item.path}
-                          onClick={() => setShowSecondaryMenu(false)}
-                          className={`flex items-start gap-2.5 p-2.5 rounded-xl transition-all ${
-                            isActive ? 'bg-brand-50 text-brand-800' : 'hover:bg-slate-50 text-slate-700'
-                          }`}
-                        >
-                          <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0 mt-0.5 text-brand-600">
-                            <Icon className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <p className="text-xs font-bold">{item.name}</p>
-                            <p className="text-[10px] text-slate-500 leading-tight mt-0.5">{item.description}</p>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* District Nodal / Admin Direct Tabs */}
-              {isGovernment && (
-                <Link
-                  to="/dashboard/government"
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all ${
-                    location.pathname.startsWith('/dashboard/government')
-                      ? 'bg-amber-100 text-amber-900 shadow-xs'
-                      : 'text-amber-800 hover:bg-amber-50'
-                  }`}
-                >
-                  <ShieldCheck className="w-4 h-4 text-amber-600" />
-                  <span>Nodal Portal</span>
-                </Link>
-              )}
-
-              {isAdmin && (
-                <Link
-                  to="/admin"
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all ${
-                    location.pathname.startsWith('/admin')
-                      ? 'bg-rose-100 text-rose-900 shadow-xs'
-                      : 'text-rose-700 hover:bg-rose-50'
-                  }`}
-                >
-                  <Crown className="w-3.5 h-3.5 text-rose-600" />
-                  <span>Admin Panel</span>
-                </Link>
-              )}
-            </div>
-
-            {/* 3. RIGHT CONTROLS: HELP TOUR + REPORT PROBLEM + NOTIFICATIONS + USER PROFILE */}
+            {/* RIGHT CONTROLS: REPORT PROBLEM + NOTIFICATIONS + SIGN IN / USER PROFILE */}
             <div className="flex items-center gap-2 sm:gap-3">
               
-              {/* Quick Help Guide Button */}
-              <Tooltip text="Platform Guide & Interactive Tour" position="bottom">
-                <button
-                  onClick={() => setShowHelpModal(true)}
-                  className="p-2 rounded-xl text-slate-500 hover:text-brand-700 hover:bg-brand-50/80 transition-colors cursor-pointer"
-                  aria-label="Platform Help Guide"
-                >
-                  <HelpCircle className="w-4 h-4" />
-                </button>
-              </Tooltip>
-
-              {/* Fast Action: Report Problem Button */}
-              <Link to="/report-problem" className="hidden sm:inline-block">
-                <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-brand-700 to-emerald-600 shadow-xs hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 cursor-pointer">
-                  <PlusCircle className="w-3.5 h-3.5" />
+              {/* Report Problem CTA Button */}
+              <Link to="/report-problem">
+                <button className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-brand-700 via-emerald-600 to-teal-600 shadow-md shadow-brand-600/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 cursor-pointer">
+                  <PlusCircle className="w-4 h-4" />
                   <span>Report Problem</span>
                 </button>
               </Link>
 
               {/* Notification Bell Dropdown */}
               <div className="relative">
-                <Tooltip text="Real-time Platform Notifications" position="bottom">
+                <Tooltip text="Notifications" position="bottom">
                   <button
                     onClick={() => {
                       setShowNotifDropdown(!showNotifDropdown);
@@ -374,12 +252,12 @@ export const Navbar = () => {
                 )}
               </div>
 
-              {/* 4. USER AUTH & PERSONA DROPDOWN (Enriched Profile Card) */}
+              {/* USER AUTH & PERSONA PROFILE DROPDOWN */}
               {profile ? (
                 <div className="relative">
                   <button
                     onClick={() => setShowUserDropdown(!showUserDropdown)}
-                    className="flex items-center gap-2 pl-2 pr-3 py-1 rounded-2xl hover:bg-slate-100/80 border border-slate-200/70 transition-all cursor-pointer group"
+                    className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-2xl hover:bg-slate-100/80 border border-slate-200/80 transition-all cursor-pointer group"
                   >
                     <img
                       src={profile.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.email}`}
@@ -388,7 +266,7 @@ export const Navbar = () => {
                     />
                     <div className="hidden sm:block text-left">
                       <div className="flex items-center gap-1">
-                        <p className="text-xs font-bold text-slate-900 leading-tight truncate max-w-[100px]">
+                        <p className="text-xs font-bold text-slate-900 leading-tight truncate max-w-[110px]">
                           {profile.full_name?.split(' ')[0] || 'User'}
                         </p>
                         {isAdmin && <Crown className="w-3 h-3 text-amber-500" />}
@@ -501,18 +379,6 @@ export const Navbar = () => {
                           </Link>
                         )}
 
-                        {/* Report Problem Quick CTA */}
-                        <Link 
-                          to="/report-problem" 
-                          onClick={() => setShowUserDropdown(false)}
-                          className="block"
-                        >
-                          <button className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 bg-brand-50 hover:bg-brand-100 text-brand-800 border border-brand-200 rounded-xl text-xs font-bold transition-all cursor-pointer">
-                            <PlusCircle className="w-4 h-4 text-brand-600" />
-                            <span>+ Report a Local Problem</span>
-                          </button>
-                        </Link>
-
                         {/* Change Role / Edit Profile */}
                         <button
                           onClick={() => {
@@ -598,7 +464,7 @@ export const Navbar = () => {
               ) : (
                 <button
                   onClick={signInWithGoogle}
-                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
                 >
                   <LogIn className="w-3.5 h-3.5 text-brand-600" />
                   <span>Sign In</span>
@@ -618,10 +484,95 @@ export const Navbar = () => {
           </div>
         </div>
 
-        {/* 5. MOBILE DRAWER NAVIGATION */}
+        {/* =================================================================== */}
+        {/* 2. MINI HORIZONTAL SUB-NAVBAR (UNDER MAIN NAVBAR)                    */}
+        {/* =================================================================== */}
+        <div className="hidden lg:block border-t border-slate-200/70 bg-slate-50/70 backdrop-blur-md">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-11">
+              
+              {/* Navigation Tabs */}
+              <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
+                {subNavLinks.map((link) => {
+                  const Icon = link.icon;
+                  const isActive = location.pathname === link.path;
+                  return (
+                    <Tooltip key={link.path} text={link.tooltip} position="bottom">
+                      <Link
+                        to={link.path}
+                        className={`relative inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 ${
+                          isActive
+                            ? 'bg-white text-brand-800 shadow-xs border border-slate-200/90'
+                            : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                        }`}
+                      >
+                        <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-brand-600' : 'text-slate-400'}`} />
+                        <span>{link.name}</span>
+                        
+                        {link.badge && (
+                          <span className="text-[9px] px-1.5 py-0.2 rounded bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-mono font-bold shadow-2xs">
+                            {link.badge}
+                          </span>
+                        )}
+
+                        {isActive && (
+                          <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-brand-600" />
+                        )}
+                      </Link>
+                    </Tooltip>
+                  );
+                })}
+
+                {/* Direct Nodal Portal Tab (If Govt) */}
+                {isGovernment && (
+                  <Link
+                    to="/dashboard/government"
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      location.pathname.startsWith('/dashboard/government')
+                        ? 'bg-amber-100 text-amber-900 shadow-xs border border-amber-200'
+                        : 'text-amber-800 hover:bg-amber-50'
+                    }`}
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
+                    <span>Nodal Portal</span>
+                  </Link>
+                )}
+
+                {/* Direct Admin Panel Tab (If Admin) */}
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                      location.pathname.startsWith('/admin')
+                        ? 'bg-rose-100 text-rose-900 shadow-xs border border-rose-200'
+                        : 'text-rose-700 hover:bg-rose-50'
+                    }`}
+                  >
+                    <Crown className="w-3.5 h-3.5 text-rose-600" />
+                    <span>Admin Panel</span>
+                  </Link>
+                )}
+              </div>
+
+              {/* Right Side: Quick Help Guide Modal Trigger */}
+              <button
+                onClick={() => setShowHelpModal(true)}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-brand-700 px-2.5 py-1 rounded-lg hover:bg-white/80 transition-colors cursor-pointer shrink-0"
+              >
+                <HelpCircle className="w-3.5 h-3.5 text-brand-600" />
+                <span>Platform Guide</span>
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+        {/* =================================================================== */}
+        {/* 3. MOBILE MENU DRAWER (RESPONSIVE VIEW)                             */}
+        {/* =================================================================== */}
         {mobileMenuOpen && (
           <div className="lg:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-xl p-4 space-y-3 animate-in slide-in-from-top-2 text-left">
-            {primaryNavLinks.map((link) => (
+            {subNavLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
@@ -651,25 +602,16 @@ export const Navbar = () => {
               </Link>
             )}
 
-            {/* Secondary Ecosystem Links */}
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-2">
-              Ecosystem Hubs
-            </p>
-            {secondaryNavLinks.map((link) => (
+            {isGovernment && (
               <Link
-                key={link.path}
-                to={link.path}
+                to="/dashboard/government"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-2.5 p-2.5 rounded-xl text-sm font-bold transition-colors ${
-                  location.pathname === link.path
-                    ? 'bg-brand-50 text-brand-700'
-                    : 'text-slate-700 hover:bg-slate-100'
-                }`}
+                className="flex items-center gap-2.5 p-2.5 rounded-xl text-sm font-bold text-amber-800 bg-amber-50"
               >
-                <link.icon className="w-4 h-4 text-brand-600" />
-                <span>{link.name}</span>
+                <ShieldCheck className="w-4 h-4 text-amber-600" />
+                <span>Nodal Triage Portal</span>
               </Link>
-            ))}
+            )}
 
             {/* Mobile Actions */}
             <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
