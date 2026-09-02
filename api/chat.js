@@ -220,12 +220,10 @@ export default async function handler(req, res) {
 
     let response = null;
     const candidateModels = [
-      'gemini-2.5-flash',
       'gemini-2.5-pro',
+      'gemini-2.5-flash',
       'gemini-3.1-pro-preview',
-      'gemini-2.0-flash',
-      'gemini-1.5-flash',
-      'gemini-1.5-pro'
+      'gemini-2.0-flash-exp'
     ];
 
     for (const modelName of candidateModels) {
@@ -243,10 +241,11 @@ export default async function handler(req, res) {
         response = await Promise.race([generatePromise, timeoutPromise]);
         if (response) break;
       } catch (modelErr) {
-        console.warn(`[Samadhan AI] Model ${modelName} returned error:`, modelErr.message);
-        // Continue to try next candidate model
+        console.warn(`[Samadhan AI] Model ${modelName} returned notice:`, modelErr.message);
+        // Continue to next candidate model or fallback to civic knowledge base
       }
     }
+
 
     const replyText = response?.text || response?.candidates?.[0]?.content?.parts?.[0]?.text;
 
