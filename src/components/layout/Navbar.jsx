@@ -315,34 +315,23 @@ export const Navbar = () => {
                 )}
               </div>
 
-              {/* Persona Quick Card or Sign In Link */}
-              {profile ? (
-                <Tooltip content="Active Persona • Click to Switch" position="bottom">
-                  <Link 
-                    to="/login"
-                    className="hidden sm:flex items-center gap-2.5 pl-3 border-l border-slate-200 hover:opacity-85 transition-opacity"
-                  >
-                    <img
-                      src={profile.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Demo'}
-                      alt={profile.full_name}
-                      className="w-8 h-8 rounded-full border border-brand-400/60 bg-slate-100 shadow-xs"
-                    />
-                    <div className="text-left">
-                      <p className="text-xs font-bold text-slate-900 leading-tight truncate max-w-[120px]">
-                        {profile.full_name}
-                      </p>
-                      <p className="text-[10px] font-mono text-brand-600 font-bold uppercase tracking-tight">
-                        {profile.role}
-                      </p>
-                    </div>
-                  </Link>
-                </Tooltip>
-              ) : (
-                <Link to="/login" className="hidden sm:inline-block">
-                  <button className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors">
-                    Sign In
-                  </button>
-                </Link>
+              {/* Persona Quick Card */}
+              {profile && (
+                <div className="hidden sm:flex items-center gap-2.5 pl-3 border-l border-slate-200">
+                  <img
+                    src={profile.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Demo'}
+                    alt={profile.full_name}
+                    className="w-8 h-8 rounded-full border border-brand-400/60 bg-slate-100 shadow-xs"
+                  />
+                  <div className="text-left">
+                    <p className="text-xs font-bold text-slate-900 leading-tight truncate max-w-[120px]">
+                      {profile.full_name}
+                    </p>
+                    <p className="text-[10px] font-mono text-brand-600 font-bold uppercase tracking-tight">
+                      {profile.role}
+                    </p>
+                  </div>
+                </div>
               )}
 
               {/* Mobile Menu Trigger */}

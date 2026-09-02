@@ -13,9 +13,6 @@ const ROLES = [
 
 export const RoleSwitcherBar = () => {
   const { profile, simulateRole } = useAuth();
-  const isRealBackend = isConfiguredSupabase();
-
-  if (isRealBackend) return null; // Hide the simulator if connected to production
 
   return (
     <div className="bg-slate-900 text-slate-300 text-xs py-2 px-4 flex items-center justify-between z-50 sticky top-0">

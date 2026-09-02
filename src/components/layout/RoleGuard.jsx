@@ -13,13 +13,8 @@ export const RoleGuard = ({ children, allowedRoles }) => {
     );
   }
 
-  // If there's no profile, redirect to login
-  if (!profile) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // If the user's role is not in the allowed list, redirect to home
-  if (!allowedRoles.includes(profile.role)) {
+  // If there's no profile or role is not allowed, redirect to home
+  if (!profile || !allowedRoles.includes(profile.role)) {
     return <Navigate to="/" replace />;
   }
 
