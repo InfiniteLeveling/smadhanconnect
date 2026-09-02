@@ -486,7 +486,7 @@ export const LoginPage = () => {
               <p className="text-xs text-slate-500 font-medium">
                 Don't have an account?{' '}
                 <Link
-                  to="/report-problem"
+                  to="/register"
                   className="font-bold text-brand-700 hover:text-brand-800 hover:underline inline-flex items-center gap-0.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-500 rounded"
                 >
                   Create Account <ArrowRight className="w-3 h-3 ml-0.5" />

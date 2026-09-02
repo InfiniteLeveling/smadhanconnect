@@ -138,29 +138,36 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-  const register = async (email, password, fullName, role = 'CITIZEN') => {
+  const register = async (email, password, fullName, role = 'CITIZEN', extraData = {}) => {
+    const cleanEmail = email.trim().toLowerCase();
+
     if (!isConfiguredSupabase()) {
       const newMockUser = {
         id: `user-${Date.now()}`,
         full_name: fullName || 'New Citizen',
-        email: email,
+        email: cleanEmail,
         role: role,
-        district: 'Ranchi',
+        district: extraData.district || 'Ranchi',
+        phone: extraData.phone || '',
+        organization: extraData.organization || (role === 'UNIVERSITY' ? 'BIT Mesra' : role === 'INDUSTRY' ? 'Tata Steel CSR' : 'Jharkhand Civic Network'),
         avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(fullName || 'User')}`
       };
       localStorage.setItem('samadhan_mock_role', role);
       setUser({ id: newMockUser.id, email: newMockUser.email });
       setProfile(newMockUser);
-      return { user: newMockUser };
+      return { user: newMockUser, session: { user: newMockUser } };
     }
 
     const { data, error } = await supabase.auth.signUp({
-      email: email.trim(),
+      email: cleanEmail,
       password,
       options: {
         data: { 
           full_name: fullName, 
-          role: role 
+          role: role,
+          district: extraData.district || 'Ranchi',
+          phone: extraData.phone || '',
+          organization: extraData.organization || ''
         }
       }
     });
@@ -169,7 +176,14 @@ export const AuthProvider = ({ children }) => {
 
     if (data.user) {
       setUser(data.user);
-      await fetchProfile(data.user.id, { full_name: fullName, role, email });
+      await fetchProfile(data.user.id, { 
+        full_name: fullName, 
+        role, 
+        email: cleanEmail,
+        district: extraData.district || 'Ranchi',
+        phone: extraData.phone || '',
+        organization: extraData.organization || ''
+      });
     }
 
     return data;
