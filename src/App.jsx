@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { RoleSelectionModal } from './components/auth/RoleSelectionModal';
 import { Navbar } from './components/layout/Navbar';
+import { Footer } from './components/layout/Footer';
 import { RoleGuard } from './components/layout/RoleGuard';
 import { HomePage } from './pages/HomePage';
 import { ReportProblemPage } from './pages/ReportProblemPage';
@@ -28,7 +29,7 @@ export default function App() {
           {/* Global First-Time Role Selection Onboarding Modal */}
           <RoleSelectionModal />
 
-          <div className="flex-1">
+          <main className="flex-1">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/challenges" element={<ChallengesPage />} />
@@ -57,10 +58,14 @@ export default function App() {
                 } 
               />
             </Routes>
-          </div>
+          </main>
+
+          {/* Global Civic Tech Footer */}
+          <Footer />
         </div>
       </AuthProvider>
     </Router>
   );
 }
+
 

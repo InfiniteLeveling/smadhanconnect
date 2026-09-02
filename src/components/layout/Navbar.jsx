@@ -25,7 +25,8 @@ import {
   LogOut,
   User,
   Settings,
-  LogIn
+  LogIn,
+  Bot
 } from 'lucide-react';
 
 export const Navbar = () => {
@@ -80,6 +81,13 @@ export const Navbar = () => {
       tooltip: 'Browse real civic problems across 24 districts'
     },
     { 
+      name: 'Samadhan AI', 
+      path: '/messages', 
+      icon: Bot,
+      badge: 'AI Assistant',
+      tooltip: 'Official civic chatbot powered by Gemini 2.5 Pro'
+    },
+    { 
       name: 'Workspace', 
       path: '/projects/proj-001', 
       icon: Rocket,
@@ -106,14 +114,9 @@ export const Navbar = () => {
       path: '/industries', 
       icon: Building2,
       tooltip: 'Connect corporate sponsors with civic projects'
-    },
-    { 
-      name: 'Messaging', 
-      path: '/messages', 
-      icon: MessageSquare,
-      tooltip: 'Communicate with project collaborators'
     }
   ];
+
 
   const isGovernment = profile?.role === 'GOVERNMENT' || profile?.role === 'ADMIN';
   const isAdmin = profile?.role === 'ADMIN' || isSuperAdmin;
@@ -159,13 +162,19 @@ export const Navbar = () => {
                       >
                         <Icon className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 ${isActive ? 'text-brand-600' : 'text-slate-400 group-hover:text-brand-600'}`} />
                         <span>{link.name}</span>
-                        {isActive && (
+                        {link.badge && (
+                          <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold animate-pulse">
+                            AI
+                          </span>
+                        )}
+                        {isActive && !link.badge && (
                           <span className="w-1.5 h-1.5 rounded-full bg-brand-600 animate-pulse" />
                         )}
                       </Link>
                     </Tooltip>
                   );
                 })}
+
 
                 {/* Secondary Ecosystem Hubs Dropdown */}
                 <div className="relative">

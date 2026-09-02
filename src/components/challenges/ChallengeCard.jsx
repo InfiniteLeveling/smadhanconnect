@@ -5,7 +5,7 @@ import { MapPin, ThumbsUp, ArrowRight, Clock, Sparkles } from 'lucide-react';
 
 export const ChallengeCard = ({ challenge, onUpvote }) => {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 hover:border-brand-500/60 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+    <div className="bg-white rounded-3xl border border-slate-200/90 hover:border-brand-500/70 shadow-xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
       {/* Evidence Thumbnail if present */}
       {challenge.evidence_url && (
         <div className="h-44 w-full relative overflow-hidden bg-slate-100">
@@ -23,7 +23,7 @@ export const ChallengeCard = ({ challenge, onUpvote }) => {
         </div>
       )}
 
-      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+      <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
         {!challenge.evidence_url && (
           <div className="flex items-center justify-between gap-2">
             <StatusBadge status={challenge.urgency} />
@@ -32,13 +32,13 @@ export const ChallengeCard = ({ challenge, onUpvote }) => {
         )}
 
         <div className="space-y-2">
-          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-700 border border-brand-200/60 inline-block">
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-700 border border-brand-200/60 inline-block font-mono">
             {challenge.category_name || 'Civic Problem'}
           </span>
           <h3 className="text-lg font-bold font-display text-slate-900 leading-snug group-hover:text-brand-600 transition-colors line-clamp-2">
             {challenge.title}
           </h3>
-          <p className="text-slate-600 text-sm line-clamp-2 leading-relaxed">
+          <p className="text-slate-600 text-xs sm:text-sm line-clamp-2 leading-relaxed">
             {challenge.description}
           </p>
         </div>
@@ -61,17 +61,18 @@ export const ChallengeCard = ({ challenge, onUpvote }) => {
                 e.preventDefault();
                 onUpvote && onUpvote(challenge.id);
               }}
-              className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-brand-600 bg-slate-50 hover:bg-brand-50 border border-slate-200 px-3 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-brand-700 bg-slate-50 hover:bg-brand-50 border border-slate-200 hover:border-brand-300 px-3 py-1.5 rounded-xl transition-all cursor-pointer active:scale-95"
             >
-              <ThumbsUp className="w-3.5 h-3.5" />
+              <ThumbsUp className="w-3.5 h-3.5 text-brand-600" />
               <span>{challenge.upvotes || 0} Upvotes</span>
             </button>
 
             <Link
               to={`/challenges/${challenge.id}`}
-              className="inline-flex items-center gap-1 text-xs font-bold text-brand-600 hover:text-brand-700 group-hover:translate-x-0.5 transition-transform"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 hover:text-brand-800 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-xl border border-brand-200/80 transition-all group-hover:translate-x-0.5"
             >
-              View & Bid <ArrowRight className="w-3.5 h-3.5" />
+              <span>View & Propose</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>

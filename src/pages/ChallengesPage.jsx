@@ -14,7 +14,7 @@ import {
   Sparkles,
   PlusCircle
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const JHARKHAND_DISTRICTS = [
   'All Districts',
@@ -57,13 +57,23 @@ const CATEGORIES = [
 ];
 
 export const ChallengesPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialQuery = searchParams.get('q') || '';
+
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [selectedDistrict, setSelectedDistrict] = useState('All Districts');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
   const [selectedUrgency, setSelectedUrgency] = useState('ALL');
+
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q !== null && q !== searchQuery) {
+      setSearchQuery(q);
+    }
+  }, [searchParams]);
 
   const loadChallenges = async () => {
     setLoading(true);
@@ -88,6 +98,7 @@ export const ChallengesPage = () => {
     } catch (err) {
       console.error(err);
     }
+
   };
 
   // Filter Logic
@@ -152,8 +163,17 @@ export const ChallengesPage = () => {
             placeholder="Search challenges by title, keywords, or location..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 focus:outline-none transition-all text-sm"
+            className="w-full pl-12 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 focus:outline-none transition-all text-sm"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
+              title="Clear search"
+            >
+              <span className="text-xs font-bold bg-slate-200 hover:bg-slate-300 w-5 h-5 rounded-full flex items-center justify-center">✕</span>
+            </button>
+          )}
         </div>
 
         {/* Dropdowns Row */}
@@ -212,7 +232,7 @@ export const ChallengesPage = () => {
                 setSelectedUrgency('ALL');
                 setSearchQuery('');
               }}
-              className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg transition-colors"
+              className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg transition-colors cursor-pointer"
             >
               Reset All Filters
             </button>
@@ -230,7 +250,7 @@ export const ChallengesPage = () => {
             <button
               key={tab.id}
               onClick={() => setSelectedStatus(tab.id)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 selectedStatus === tab.id
                   ? 'bg-slate-900 text-white shadow-sm'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -251,9 +271,15 @@ export const ChallengesPage = () => {
         </div>
 
         {loading ? (
-          <div className="p-16 text-center text-slate-500">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500 mx-auto mb-3"></div>
-            Loading marketplace challenges...
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((sk) => (
+              <div key={sk} className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 animate-pulse">
+                <div className="h-4 bg-slate-200 rounded w-1/3"></div>
+                <div className="h-6 bg-slate-200 rounded w-3/4"></div>
+                <div className="h-16 bg-slate-100 rounded w-full"></div>
+                <div className="h-8 bg-slate-100 rounded w-full pt-4"></div>
+              </div>
+            ))}
           </div>
         ) : filteredChallenges.length === 0 ? (
           <EmptyState
@@ -268,16 +294,14 @@ export const ChallengesPage = () => {
               setSelectedStatus('ALL');
               setSelectedUrgency('ALL');
             }}
-            secondaryActionText="+ Report a Problem"
-            secondaryActionLink="/report-problem"
           />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredChallenges.map((challenge) => (
-              <ChallengeCard 
-                key={challenge.id} 
-                challenge={challenge} 
-                onUpvote={handleUpvote} 
+              <ChallengeCard
+                key={challenge.id}
+                challenge={challenge}
+                onUpvote={handleUpvote}
               />
             ))}
           </div>
@@ -286,3 +310,4 @@ export const ChallengesPage = () => {
     </div>
   );
 };
+
