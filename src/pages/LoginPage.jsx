@@ -81,7 +81,7 @@ const ECOSYSTEM_ROLES = [
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, resetPassword } = useAuth();
 
   const [selectedRole, setSelectedRole] = useState(ECOSYSTEM_ROLES[0]);
   const [email, setEmail] = useState('ramesh@example.com');
@@ -92,6 +92,7 @@ export const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [infoMessage, setInfoMessage] = useState('');
   const [showGovSsoModal, setShowGovSsoModal] = useState(false);
 
   // Switch role and update default email
@@ -99,6 +100,21 @@ export const LoginPage = () => {
     setSelectedRole(role);
     setEmail(role.defaultEmail);
     setErrorMessage('');
+    setInfoMessage('');
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email.trim()) {
+      setErrorMessage('Please enter your email address to receive password reset instructions.');
+      return;
+    }
+    try {
+      await resetPassword(email);
+      setInfoMessage(`Password reset instructions have been sent to ${email}. Please check your inbox.`);
+      setErrorMessage('');
+    } catch (err) {
+      setErrorMessage(err.message || 'Unable to send password reset email.');
+    }
   };
 
   const validateForm = () => {
@@ -225,6 +241,18 @@ export const LoginPage = () => {
               >
                 <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
                 <p className="font-medium leading-relaxed">{errorMessage}</p>
+              </div>
+            )}
+
+            {/* Info Message Banner */}
+            {infoMessage && (
+              <div 
+                role="status" 
+                aria-live="polite"
+                className="mb-5 p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-start gap-2.5 text-xs text-emerald-800 animate-in fade-in-50 font-medium"
+              >
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <p className="leading-relaxed">{infoMessage}</p>
               </div>
             )}
 
@@ -359,7 +387,7 @@ export const LoginPage = () => {
                   </label>
                   <button
                     type="button"
-                    onClick={() => alert('For SIH Demo: Any password works for offline simulated credentials. If connected to live Supabase, enter your account password.')}
+                    onClick={handleForgotPassword}
                     className="text-[11px] font-bold text-brand-700 hover:text-brand-800 hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-500 rounded cursor-pointer"
                   >
                     Forgot Password?
