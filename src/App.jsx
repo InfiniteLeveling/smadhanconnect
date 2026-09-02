@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { RoleSwitcherBar } from './components/ui/RoleSwitcherBar';
+import { RoleSelectionModal } from './components/auth/RoleSelectionModal';
 import { Navbar } from './components/layout/Navbar';
 import { RoleGuard } from './components/layout/RoleGuard';
 import { HomePage } from './pages/HomePage';
 import { ReportProblemPage } from './pages/ReportProblemPage';
 import { GovernmentDashboard } from './pages/dashboards/GovernmentDashboard';
+import { AdminDashboardPage } from './pages/dashboards/AdminDashboardPage';
 import { ChallengesPage } from './pages/ChallengesPage';
 import { ChallengeDetailPage } from './pages/ChallengeDetailPage';
 import { ProjectWorkspacePage } from './pages/ProjectWorkspacePage';
@@ -20,11 +21,12 @@ export default function App() {
     <Router>
       <AuthProvider>
         <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans">
-          {/* Top Role Simulator Quick-Switch Toolbar */}
-          <RoleSwitcherBar />
-
+          
           {/* Main Global Navigation Bar */}
           <Navbar />
+
+          {/* Global First-Time Role Selection Onboarding Modal */}
+          <RoleSelectionModal />
 
           <div className="flex-1">
             <Routes>
@@ -46,6 +48,14 @@ export default function App() {
                   </RoleGuard>
                 } 
               />
+              <Route 
+                path="/admin" 
+                element={
+                  <RoleGuard allowedRoles={['ADMIN']}>
+                    <AdminDashboardPage />
+                  </RoleGuard>
+                } 
+              />
             </Routes>
           </div>
         </div>
@@ -53,3 +63,4 @@ export default function App() {
     </Router>
   );
 }
+

@@ -1,6 +1,7 @@
 import { supabase, isConfiguredSupabase } from './supabase';
+import { MOCK_PROFILES } from '../data/mockDatabase';
 
-// Rich seed mock challenges for offline presentation & instant evaluator testing
+let activeProfiles = [...MOCK_PROFILES];
 let mockChallenges = [
   {
     id: 'chal-001',
@@ -944,4 +945,138 @@ export const uploadEvidenceFile = async (file, bucketName = 'challenge-evidence'
     .getPublicUrl(filePath);
 
   return publicUrl;
+};
+
+// ==========================================
+// USER & PROFILE MANAGEMENT (ADMIN & ONBOARDING)
+// ==========================================
+
+export const getAllProfiles = async () => {
+  if (!isConfiguredSupabase()) {
+    return [...activeProfiles];
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error || !data || data.length === 0) {
+    return [...activeProfiles];
+  }
+
+  return data;
+};
+
+export const getUserProfile = async (userId) => {
+  if (!userId) return null;
+
+  if (!isConfiguredSupabase()) {
+    return activeProfiles.find(p => p.id === userId || p.email === userId) || null;
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error || !data) {
+    return activeProfiles.find(p => p.id === userId || p.email === userId) || null;
+  }
+
+  return data;
+};
+
+export const updateUserProfileRole = async (userId, newRole) => {
+  if (!userId || !newRole) return { success: false, error: 'Missing parameters' };
+
+  if (!isConfiguredSupabase()) {
+    activeProfiles = activeProfiles.map(p => 
+      (p.id === userId || p.email === userId) ? { ...p, role: newRole } : p
+    );
+    return { success: true, role: newRole };
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update({ role: newRole, updated_at: new Date().toISOString() })
+    .eq('id', userId)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating user role:', error);
+    // fallback in memory
+    activeProfiles = activeProfiles.map(p => 
+      (p.id === userId || p.email === userId) ? { ...p, role: newRole } : p
+    );
+    return { success: false, error: error.message };
+  }
+
+  return { success: true, data };
+};
+
+export const updateProfileVerification = async (userId, isVerified) => {
+  if (!userId) return { success: false };
+
+  if (!isConfiguredSupabase()) {
+    activeProfiles = activeProfiles.map(p => 
+      (p.id === userId || p.email === userId) ? { ...p, verification_status: isVerified } : p
+    );
+    return { success: true, verification_status: isVerified };
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update({ verification_status: isVerified, updated_at: new Date().toISOString() })
+    .eq('id', userId)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating verification status:', error);
+    return { success: false, error: error.message };
+  }
+
+  return { success: true, data };
+};
+
+export const saveUserProfile = async (profileData) => {
+  if (!profileData?.id) return { success: false, error: 'No user ID' };
+
+  if (!isConfiguredSupabase()) {
+    const existingIndex = activeProfiles.findIndex(p => p.id === profileData.id || p.email === profileData.email);
+    if (existingIndex >= 0) {
+      activeProfiles[existingIndex] = { ...activeProfiles[existingIndex], ...profileData };
+    } else {
+      activeProfiles.push(profileData);
+    }
+    return { success: true, data: profileData };
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .upsert({
+      id: profileData.id,
+      email: profileData.email,
+      full_name: profileData.full_name || profileData.email?.split('@')[0] || 'Civic User',
+      avatar_url: profileData.avatar_url,
+      role: profileData.role || 'CITIZEN',
+      organization: profileData.organization || null,
+      district: profileData.district || 'Ranchi',
+      phone: profileData.phone || null,
+      bio: profileData.bio || null,
+      verification_status: profileData.email?.toLowerCase() === 'microsoft1gab@gmail.com' ? true : (profileData.verification_status || false),
+      updated_at: new Date().toISOString()
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error saving user profile:', error);
+    return { success: false, error: error.message };
+  }
+
+  return { success: true, data };
 };

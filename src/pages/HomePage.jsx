@@ -5,11 +5,10 @@ import { CivicNetworkCanvas } from '../components/home/CivicNetworkCanvas';
 import { JharkhandHeroGraphic } from '../components/home/JharkhandHeroGraphic';
 import { FeatureCards } from '../components/home/FeatureCards';
 import { ImpactSection } from '../components/home/ImpactSection';
+import { HeroLoginCard } from '../components/home/HeroLoginCard';
 import { 
   ArrowRight, 
   Sparkles, 
-  Info, 
-  UserCheck, 
   Compass, 
   Shield, 
   CheckCircle2, 
@@ -37,11 +36,11 @@ export const HomePage = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-20 space-y-16 sm:space-y-24">
         
         {/* ===================================================================== */}
-        {/* HERO SECTION (2-Column Layout with High Readability & 3D Parallax)    */}
+        {/* HERO SECTION (2-Column Layout with High Readability & Login Widget)   */}
         {/* ===================================================================== */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center min-h-[540px]">
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-start min-h-[540px]">
           
-          {/* Left Column: Hero Text & CTAs */}
+          {/* Left Column: Hero Text, CTAs & Small Login Window */}
           <div className="lg:col-span-7 space-y-6 text-left">
             
             {/* Official Initiative Badge */}
@@ -71,16 +70,16 @@ export const HomePage = () => {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-wrap items-center gap-4 pt-1">
               <Link to="/report-problem">
-                <button className="group relative inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-brand-700 via-emerald-600 to-teal-600 shadow-lg shadow-brand-600/25 hover:shadow-xl hover:shadow-brand-500/35 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer">
+                <button className="group relative inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-brand-700 via-emerald-600 to-teal-600 shadow-lg shadow-brand-600/25 hover:shadow-xl hover:shadow-brand-500/35 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer">
                   <span>Report a Problem</span>
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </button>
               </Link>
 
               <Link to="/challenges">
-                <button className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-bold text-slate-700 bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm hover:bg-white hover:border-brand-400 hover:text-brand-700 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer">
+                <button className="group inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-bold text-slate-700 bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm hover:bg-white hover:border-brand-400 hover:text-brand-700 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer">
                   <Compass className="w-4 h-4 text-brand-600 group-hover:rotate-45 transition-transform duration-300" />
                   <span>Explore Challenges</span>
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-brand-600 group-hover:translate-x-1 transition-all duration-300" />
@@ -88,45 +87,9 @@ export const HomePage = () => {
               </Link>
             </div>
 
-            {/* Evaluator Persona / Simulator Prompt Box */}
-            <div className="pt-2 max-w-xl">
-              {profile ? (
-                <div className="p-4 sm:p-5 bg-white/90 backdrop-blur-md border border-brand-200/80 rounded-2xl flex items-center justify-between shadow-sm hover:border-brand-300 transition-colors">
-                  <div className="flex items-center gap-3.5">
-                    <img
-                      src={profile.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Demo'}
-                      alt={profile.full_name}
-                      className="w-10 h-10 rounded-full border border-brand-400/60 bg-brand-50"
-                    />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="text-[10px] text-brand-700 font-bold uppercase tracking-wider font-mono">
-                          Active Evaluator Persona
-                        </p>
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      </div>
-                      <p className="text-base font-bold text-slate-900 leading-tight">
-                        {profile.full_name}
-                      </p>
-                      <p className="text-xs text-slate-500">
-                        {profile.organization || 'Citizen Member'} • {profile.district || 'Jharkhand'}
-                      </p>
-                    </div>
-                  </div>
-                  <span className="font-mono bg-brand-600 text-white font-bold text-xs px-3 py-1.5 rounded-xl shadow-sm">
-                    {profile.role}
-                  </span>
-                </div>
-              ) : (
-                <div className="p-3.5 sm:p-4 bg-brand-50/90 backdrop-blur-md border border-brand-200/80 rounded-2xl flex items-center gap-3 text-slate-700 shadow-sm">
-                  <div className="w-8 h-8 rounded-xl bg-brand-100/80 border border-brand-300/60 flex items-center justify-center text-brand-700 shrink-0">
-                    <Info className="w-4 h-4 animate-bounce" />
-                  </div>
-                  <p className="text-xs font-semibold text-slate-700">
-                    Please select a role from the top simulator bar to experience role-based civic workflows.
-                  </p>
-                </div>
-              )}
+            {/* LEFT-SIDE DIRECT LOGIN / PERSONA WINDOW */}
+            <div className="pt-2 max-w-lg">
+              <HeroLoginCard />
             </div>
 
             {/* Micro Live Stats Bar */}

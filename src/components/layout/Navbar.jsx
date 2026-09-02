@@ -20,16 +20,22 @@ import {
   Building2, 
   HelpCircle,
   Sparkles,
-  ChevronDown
+  ChevronDown,
+  Crown,
+  LogOut,
+  User,
+  Settings,
+  LogIn
 } from 'lucide-react';
 
 export const Navbar = () => {
-  const { profile } = useAuth();
+  const { profile, user, logout, setNeedsRoleSelection, signInWithGoogle, isSuperAdmin } = useAuth();
   const location = useLocation();
 
   const [notifications, setNotifications] = useState([]);
   const [showNotifDropdown, setShowNotifDropdown] = useState(false);
   const [showSecondaryMenu, setShowSecondaryMenu] = useState(false);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showTourModal, setShowTourModal] = useState(false);
@@ -38,7 +44,6 @@ export const Navbar = () => {
   useEffect(() => {
     const hasSeenTour = localStorage.getItem('samadhan_onboarding_seen');
     if (!hasSeenTour) {
-      // Short delay for smooth entrance
       const timer = setTimeout(() => {
         setShowTourModal(true);
       }, 1200);
@@ -110,8 +115,8 @@ export const Navbar = () => {
     }
   ];
 
-  // Role-gated Nodal Queue
   const isGovernment = profile?.role === 'GOVERNMENT' || profile?.role === 'ADMIN';
+  const isAdmin = profile?.role === 'ADMIN' || isSuperAdmin;
 
   return (
     <>
@@ -173,7 +178,6 @@ export const Navbar = () => {
                     <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
                   </button>
 
-                  {/* Dropdown Menu */}
                   {showSecondaryMenu && (
                     <div
                       onMouseLeave={() => setShowSecondaryMenu(false)}
@@ -221,10 +225,28 @@ export const Navbar = () => {
                     </Link>
                   </Tooltip>
                 )}
+
+                {/* Admin Portal Nav Item (If Admin) */}
+                {isAdmin && (
+                  <Tooltip content="Manage user roles & promote admins" position="bottom">
+                    <Link
+                      to="/admin"
+                      className={`group flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                        location.pathname === '/admin'
+                          ? 'bg-rose-50 text-rose-700 border border-rose-200 shadow-xs'
+                          : 'text-rose-700 hover:bg-rose-50 border border-rose-200/60'
+                      }`}
+                    >
+                      <Crown className="w-3.5 h-3.5 text-rose-600 group-hover:scale-110 transition-transform" />
+                      <span>Admin Portal</span>
+                    </Link>
+                  </Tooltip>
+                )}
+
               </div>
             </div>
 
-            {/* Right Controls: Report Problem CTA + Notifications + Help + Persona */}
+            {/* Right Controls: Report Problem CTA + Notifications + Help + Persona Dropdown */}
             <div className="flex items-center gap-2.5">
               
               {/* Strongest CTA: + Report Problem Button */}
@@ -267,7 +289,6 @@ export const Navbar = () => {
                   </button>
                 </Tooltip>
 
-                {/* Notification Dropdown Drawer */}
                 {showNotifDropdown && (
                   <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-200/90 p-4 space-y-3 animate-in zoom-in-95 z-50">
                     <div className="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -315,23 +336,109 @@ export const Navbar = () => {
                 )}
               </div>
 
-              {/* Persona Quick Card */}
-              {profile && (
-                <div className="hidden sm:flex items-center gap-2.5 pl-3 border-l border-slate-200">
-                  <img
-                    src={profile.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Demo'}
-                    alt={profile.full_name}
-                    className="w-8 h-8 rounded-full border border-brand-400/60 bg-slate-100 shadow-xs"
-                  />
-                  <div className="text-left">
-                    <p className="text-xs font-bold text-slate-900 leading-tight truncate max-w-[120px]">
-                      {profile.full_name}
-                    </p>
-                    <p className="text-[10px] font-mono text-brand-600 font-bold uppercase tracking-tight">
-                      {profile.role}
-                    </p>
-                  </div>
+              {/* USER AUTH & PERSONA DROPDOWN */}
+              {profile ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserDropdown(!showUserDropdown)}
+                    className="flex items-center gap-2 pl-2 pr-3 py-1 rounded-2xl hover:bg-slate-100/80 border border-slate-200/70 transition-all cursor-pointer group"
+                  >
+                    <img
+                      src={profile.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.email}`}
+                      alt={profile.full_name}
+                      className="w-8 h-8 rounded-full border border-brand-400/60 bg-slate-100 shadow-xs"
+                    />
+                    <div className="hidden sm:block text-left">
+                      <div className="flex items-center gap-1">
+                        <p className="text-xs font-bold text-slate-900 leading-tight truncate max-w-[100px]">
+                          {profile.full_name?.split(' ')[0] || 'User'}
+                        </p>
+                        {isAdmin && <Crown className="w-3 h-3 text-amber-500" />}
+                      </div>
+                      <p className="text-[9px] font-mono text-brand-600 font-bold uppercase tracking-tight">
+                        {profile.role}
+                      </p>
+                    </div>
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600" />
+                  </button>
+
+                  {/* Profile Dropdown Menu */}
+                  {showUserDropdown && (
+                    <div
+                      onMouseLeave={() => setShowUserDropdown(false)}
+                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-200/90 p-3 space-y-2 z-50 animate-in fade-in zoom-in-95 text-left"
+                    >
+                      <div className="px-2 py-1.5 border-b border-slate-100">
+                        <p className="text-xs font-bold text-slate-900 truncate">{profile.full_name}</p>
+                        <p className="text-[11px] text-slate-400 font-mono truncate">{profile.email}</p>
+                        <div className="mt-1 flex items-center gap-1.5">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-brand-50 text-brand-700 border border-brand-200 font-mono">
+                            {profile.role}
+                          </span>
+                          {isAdmin && (
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-rose-100 text-rose-700">
+                              Admin
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        {isAdmin && (
+                          <Link
+                            to="/admin"
+                            onClick={() => setShowUserDropdown(false)}
+                            className="flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-bold text-rose-700 hover:bg-rose-50 transition-colors"
+                          >
+                            <Crown className="w-4 h-4 text-rose-600" />
+                            <span>Admin Management Panel</span>
+                          </Link>
+                        )}
+
+                        {isGovernment && (
+                          <Link
+                            to="/dashboard/government"
+                            onClick={() => setShowUserDropdown(false)}
+                            className="flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors"
+                          >
+                            <ShieldCheck className="w-4 h-4 text-brand-600" />
+                            <span>Nodal Triage Portal</span>
+                          </Link>
+                        )}
+
+                        <button
+                          onClick={() => {
+                            setShowUserDropdown(false);
+                            setNeedsRoleSelection(true);
+                          }}
+                          className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-100 transition-colors text-left cursor-pointer"
+                        >
+                          <Settings className="w-4 h-4 text-slate-500" />
+                          <span>Change Role / Persona</span>
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setShowUserDropdown(false);
+                            logout();
+                          }}
+                          className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 transition-colors text-left cursor-pointer"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
+              ) : (
+                <button
+                  onClick={signInWithGoogle}
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
+                >
+                  <LogIn className="w-3.5 h-3.5 text-brand-600" />
+                  <span>Sign In</span>
+                </button>
               )}
 
               {/* Mobile Menu Trigger */}
@@ -351,6 +458,32 @@ export const Navbar = () => {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white/95 backdrop-blur-xl border-b border-slate-200 px-4 py-4 space-y-2 animate-in slide-in-from-top-2">
             
+            {/* User header if logged in */}
+            {profile && (
+              <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2.5">
+                  <img
+                    src={profile.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=User'}
+                    alt={profile.full_name}
+                    className="w-8 h-8 rounded-full border border-brand-400"
+                  />
+                  <div>
+                    <p className="text-xs font-bold text-slate-900">{profile.full_name}</p>
+                    <p className="text-[10px] text-brand-600 font-bold">{profile.role}</p>
+                  </div>
+                </div>
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-2 py-1 rounded-lg bg-rose-100 text-rose-700 text-xs font-bold flex items-center gap-1"
+                  >
+                    <Crown className="w-3 h-3" /> Admin
+                  </Link>
+                )}
+              </div>
+            )}
+
             {/* Primary Links */}
             <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-1">
               Primary Navigation
@@ -373,6 +506,17 @@ export const Navbar = () => {
                 </div>
               </Link>
             ))}
+
+            {isAdmin && (
+              <Link
+                to="/admin"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 p-2.5 rounded-xl text-sm font-bold text-rose-700 bg-rose-50"
+              >
+                <Crown className="w-4 h-4 text-rose-600" />
+                <span>Admin Management Panel</span>
+              </Link>
+            )}
 
             {/* Secondary Ecosystem Links */}
             <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-2">
@@ -401,18 +545,31 @@ export const Navbar = () => {
                   setMobileMenuOpen(false);
                   setShowHelpModal(true);
                 }}
-                className="w-full py-2.5 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 flex items-center justify-center gap-2"
+                className="w-full py-2.5 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <HelpCircle className="w-4 h-4 text-brand-600" />
                 <span>Need Help? Platform Guide</span>
               </button>
 
               <Link to="/report-problem" onClick={() => setMobileMenuOpen(false)}>
-                <button className="w-full py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-brand-600 to-emerald-600 shadow-md shadow-brand-600/25 flex items-center justify-center gap-2">
+                <button className="w-full py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-brand-600 to-emerald-600 shadow-md shadow-brand-600/25 flex items-center justify-center gap-2 cursor-pointer">
                   <PlusCircle className="w-4 h-4" />
                   <span>Report Problem</span>
                 </button>
               </Link>
+
+              {profile && (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    logout();
+                  }}
+                  className="w-full py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Sign Out</span>
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -433,3 +590,4 @@ export const Navbar = () => {
     </>
   );
 };
+

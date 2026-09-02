@@ -47,11 +47,22 @@ export const MOCK_PROFILES = [
     avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sanjay',
   },
   {
+    id: 'user-super-admin',
+    full_name: 'Super Admin (Gabriel)',
+    email: 'microsoft1gab@gmail.com',
+    role: 'ADMIN',
+    organization: 'Govt. of Jharkhand IT Cell',
+    district: 'Ranchi',
+    verification_status: true,
+    avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=SuperAdmin',
+  },
+  {
     id: 'user-admin',
     full_name: 'Platform Admin',
     email: 'admin@samadhan.jharkhand.gov.in',
     role: 'ADMIN',
     organization: 'JAP-IT',
+    district: 'Ranchi',
     verification_status: true,
     avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
   }

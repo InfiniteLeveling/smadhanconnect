@@ -10,15 +10,21 @@ This guide walks through deploying **Samadhan Connect** to **Vercel / Netlify** 
 2. Open the **SQL Editor** tab in the Supabase Dashboard.
 3. Paste and run the entire contents of [`supabase/migrations/20260902000001_samadhan_schema.sql`](file:///d:/samadhanconnect/supabase/migrations/20260902000001_samadhan_schema.sql).
 4. Paste and run the RLS policies in [`supabase/migrations/20260902000002_rls_policies.sql`](file:///d:/samadhanconnect/supabase/migrations/20260902000002_rls_policies.sql).
-5. Paste and run [`supabase/seed.sql`](file:///d:/samadhanconnect/supabase/seed.sql) to seed the 24 districts of Jharkhand and civic problem categories.
-6. In **Storage**, verify that the following buckets exist or create them with public/authenticated read:
+5. Paste and run [`supabase/migrations/20260902000003_auth_admin_triggers.sql`](file:///d:/samadhanconnect/supabase/migrations/20260902000003_auth_admin_triggers.sql) to enable automatic profile creation and designate `microsoft1gab@gmail.com` as Super Admin.
+6. Paste and run [`supabase/seed.sql`](file:///d:/samadhanconnect/supabase/seed.sql) to seed the 24 districts of Jharkhand and civic problem categories.
+7. In **Authentication $\rightarrow$ Providers**:
+   - **Google**: Enable Google provider, insert Client ID & Client Secret from Google Cloud Console. Set Redirect URI: `https://<PROJECT-REF>.supabase.co/auth/v1/callback`.
+   - **GitHub**: Enable GitHub provider, insert Client ID & Client Secret from GitHub Developer OAuth Apps. Set Callback URL: `https://<PROJECT-REF>.supabase.co/auth/v1/callback`.
+   - **URL Configuration**: Add `http://localhost:5173/**` and your deployed domain under Redirect URLs.
+8. In **Storage**, verify that the following buckets exist or create them with public/authenticated read:
    - `challenge-evidence`
    - `solution-documents`
    - `project-assets`
    - `avatars`
-7. Go to **Project Settings $\rightarrow$ API** and copy:
+9. Go to **Project Settings $\rightarrow$ API** and copy:
    - `Project URL`
    - `anon public key`
+
 
 ---
 
