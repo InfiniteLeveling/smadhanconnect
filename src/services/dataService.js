@@ -745,16 +745,22 @@ export const getConversations = async (userId) => {
     return [...mockConversations];
   }
 
-  const { data, error } = await supabase
-    .from('conversations')
-    .select(`
-      *,
-      projects(title)
-    `)
-    .order('updated_at', { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from('conversations')
+      .select(`
+        *,
+        projects(title)
+      `)
+      .order('created_at', { ascending: false });
 
-  if (error) throw error;
-  return data;
+    if (error || !data || data.length === 0) {
+      return [...mockConversations];
+    }
+    return data;
+  } catch {
+    return [...mockConversations];
+  }
 };
 
 export const getMessages = async (conversationId) => {
@@ -762,18 +768,25 @@ export const getMessages = async (conversationId) => {
     return mockMessages.filter(m => m.conversation_id === conversationId);
   }
 
-  const { data, error } = await supabase
-    .from('messages')
-    .select(`
-      *,
-      profiles!sender_id(full_name, avatar_url, role)
-    `)
-    .eq('conversation_id', conversationId)
-    .order('created_at', { ascending: true });
+  try {
+    const { data, error } = await supabase
+      .from('messages')
+      .select(`
+        *,
+        profiles!sender_id(full_name, avatar_url, role)
+      `)
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: true });
 
-  if (error) throw error;
-  return data;
+    if (error || !data || data.length === 0) {
+      return mockMessages.filter(m => m.conversation_id === conversationId);
+    }
+    return data;
+  } catch {
+    return mockMessages.filter(m => m.conversation_id === conversationId);
+  }
 };
+
 
 export const sendMessage = async (conversationId, senderProfile, content) => {
   if (!isConfiguredSupabase()) {

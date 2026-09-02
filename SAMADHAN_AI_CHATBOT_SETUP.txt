@@ -1,0 +1,130 @@
+================================================================================
+SAMADHAN.CONNECT — OFFICIAL SAMADHAN AI CHATBOT SETUP & DEPLOYMENT GUIDE
+================================================================================
+Platform: Samadhan.Connect (Govt. of Jharkhand / Civic Tech Ecosystem)
+AI Engine: Google Gemini 2.5 Pro (Model: gemini-2.5-pro)
+SDK: Official Google Gen AI JavaScript SDK (@google/genai)
+Backend Endpoint: POST /api/chat
+Config File: server/config/chatbotPrompt.js
+
+--------------------------------------------------------------------------------
+1. ARCHITECTURE OVERVIEW & SECURITY
+--------------------------------------------------------------------------------
+• FRONTEND:
+  - Located in `src/pages/MessagingPage.jsx`.
+  - Pinned "Samadhan AI Assistant" channel with real-time markdown formatting,
+    typing indicators, error retry, and 24+ suggested domain prompt chips.
+  - Formats user/assistant message history context before sending to /api/chat.
+
+• BACKEND & SECURITY:
+  - Local Dev: Handled seamlessly by Vite dev server middleware (`vite.config.js`).
+  - Production: Handled by Vercel Serverless Function (`api/chat.js`).
+  - Optional Express Server: Located in `server/index.js`.
+  - SECURITY GUARANTEE: `GEMINI_API_KEY` is loaded ONLY on the server side
+    (`process.env.GEMINI_API_KEY`). It is NEVER exposed to Vite client variables,
+    HTML, localStorage, browser JS, or client-facing code.
+
+--------------------------------------------------------------------------------
+2. STEP-BY-STEP SETUP INSTRUCTIONS
+--------------------------------------------------------------------------------
+
+STEP 1: GET YOUR GOOGLE GEMINI API KEY
+--------------------------------------
+1. Visit Google AI Studio: https://aistudio.google.com/app/apikey
+2. Sign in with your Google account.
+3. Click "Create API key" (or select an existing project).
+4. Copy your API Key (it begins with `AIzaSy...`).
+
+STEP 2: CONFIGURE LOCAL ENVIRONMENT (.env)
+------------------------------------------
+1. In the project root, open or create your `.env` file:
+   VITE_SUPABASE_URL=https://ewrywhfqsuzlwamklfxv.supabase.co
+   VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   GEMINI_API_KEY=your_actual_gemini_api_key_here
+
+2. Note: `.env` is listed in `.gitignore` to prevent secret leakage.
+
+STEP 3: CONFIGURE VERCEL PRODUCTION DEPLOYMENT
+----------------------------------------------
+1. Go to your Vercel Dashboard -> Select `samadhanconnect` (or `smadhanconnect`).
+2. Navigate to: Settings -> Environment Variables.
+3. Add a new variable:
+   - Key: `GEMINI_API_KEY`
+   - Value: `your_actual_gemini_api_key_here`
+   - Target Environments: Production, Preview, Development.
+4. Click "Save" and trigger a Redeploy.
+
+--------------------------------------------------------------------------------
+3. THE 25 STRICTLY ALLOWED CIVIC & PUBLIC DOMAINS
+--------------------------------------------------------------------------------
+Samadhan AI is strictly restricted to these 25 domains defined in
+`server/config/chatbotPrompt.js`:
+
+1.  🌾 Agriculture & Farming
+2.  ⚡ Electricity & Power
+3.  🏛️ Government Services
+4.  📋 Citizen Grievances & Complaints
+5.  🎓 Education & Students
+6.  💼 Jobs & Employment
+7.  💰 Finance, Loans & Subsidies
+8.  🏥 Healthcare & Public Health
+9.  🚌 Transport & Public Mobility
+10. 🏠 Housing & Property
+11. 🌧️ Weather & Disaster Management
+12. 🌱 Environment & Pollution
+13. 🧑‍⚖️ Legal & Documentation Guidance
+14. 👩‍💼 Business & Entrepreneurship
+15. 🛒 Marketplace & Local Services
+16. 📱 Digital & Online Services
+17. 🆔 Identity & Government Documents
+18. 🎯 Career & Skill Development
+19. 🏦 Banking & Insurance
+20. 🏘️ Local Community & Municipal Services
+21. 🚰 Water & Sanitation
+22. 🔐 Cybersecurity & Online Safety
+23. 🧾 Tax & Financial Documentation
+24. 🚨 Emergency & Public Safety
+25. 🤖 General AI Assistant (Samadhan.Connect navigation, reporting, and features)
+
+--------------------------------------------------------------------------------
+4. OUT-OF-DOMAIN REFUSAL BEHAVIOR
+--------------------------------------------------------------------------------
+For any unrelated inquiry (e.g. movies, gaming, jokes, recipes, celebrity
+gossip, trivia, sports, unrelated programming), Samadhan AI refuses with:
+
+"I’m Samadhan AI, focused on Samadhan.Connect and public/community-related
+assistance. I can help with agriculture, government services, citizen
+grievances, education, jobs, healthcare, transport, housing, finance,
+environment, documentation, and the other supported domains."
+
+--------------------------------------------------------------------------------
+5. VERIFICATION & AUTOMATED TESTING
+--------------------------------------------------------------------------------
+Run the automated test suite with:
+$ node scripts/test-chatbot-gemini.js
+
+Test Cases Checked:
+• TEST 1: Farmer Subsidies inquiry -> Allowed (Agriculture / Finance)
+• TEST 2: Electricity Outage inquiry -> Allowed (Electricity & Power)
+• TEST 3: Garbage Collection complaint -> Allowed (Citizen Grievances)
+• TEST 4: Government Identity Application -> Allowed (Govt Services / ID)
+• TEST 5: "Tell me a joke." -> Out-of-Domain Refusal
+• TEST 6: "What is the latest movie?" -> Out-of-Domain Refusal
+• TEST 7: Empty message -> Rejected with 400 Bad Request
+• TEST 8: Missing/Unavailable API key -> Graceful error message with retry
+
+--------------------------------------------------------------------------------
+6. COMMAND SUMMARY
+--------------------------------------------------------------------------------
+• Start Vite Dev Server (with Gemini API middleware):
+  $ npm run dev
+
+• Build Production Bundle:
+  $ npm run build
+
+• Run Backend Chatbot Test Suite:
+  $ node scripts/test-chatbot-gemini.js
+
+================================================================================
+END OF SETUP GUIDE
+================================================================================
