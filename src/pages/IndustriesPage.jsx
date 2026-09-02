@@ -82,9 +82,10 @@ export const IndustriesPage = () => {
             <HeartHandshake className="w-4 h-4 text-emerald-400" />
             Corporate CSR & Industrial Sponsorship Directory
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold font-display leading-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold font-display leading-tight text-white">
             Corporate CSR Partnerships for Civic Transformation
           </h1>
+
           <p className="text-slate-300 text-base sm:text-lg">
             Major industrial leaders across Jharkhand mobilizing corporate social responsibility grants and technology equipment for student-led civic solutions.
           </p>

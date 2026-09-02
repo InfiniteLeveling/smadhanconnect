@@ -42,8 +42,9 @@ html.lenis, html.lenis body {
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display tracking-tight text-slate-900;
+    @apply font-display tracking-tight;
   }
+
 
   /* Accessible focus indicators */
   :focus-visible {

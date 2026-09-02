@@ -59,9 +59,10 @@ export const AnalyticsPage = () => {
           <span className="inline-flex items-center gap-1.5 bg-brand-500/20 text-brand-300 border border-brand-500/30 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">
             <TrendingUp className="w-4 h-4 text-brand-400" /> State-Wide Performance Matrix
           </span>
-          <h1 className="text-3xl sm:text-4xl font-extrabold font-display">
+          <h1 className="text-3xl sm:text-4xl font-extrabold font-display text-white">
             Jharkhand Civic Resolution & Impact Analytics
           </h1>
+
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
             Real-time telemetry, district resolution speed, CSR funding mobilization, and automated machine intelligence metrics across all 24 administrative districts.
           </p>

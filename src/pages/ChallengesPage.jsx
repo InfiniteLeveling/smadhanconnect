@@ -139,9 +139,10 @@ export const ChallengesPage = () => {
               <Compass className="w-4 h-4 text-brand-400" />
               Jharkhand Civic Innovation Marketplace
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display leading-tight text-white">
               Discover Verified Real-World Challenges & Build Solutions
             </h1>
+
             <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
               Connect directly with verified civic problems from 24 districts across Jharkhand. Submit your research, build prototypes, and receive government and CSR backing.
             </p>

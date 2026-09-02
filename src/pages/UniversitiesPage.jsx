@@ -90,9 +90,10 @@ export const UniversitiesPage = () => {
             <GraduationCap className="w-4 h-4 text-brand-400" />
             Academic Innovation & Mentorship Network
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold font-display leading-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold font-display leading-tight text-white">
             Jharkhand University R&D & Engineering Labs
           </h1>
+
           <p className="text-slate-300 text-base sm:text-lg">
             Connect with leading higher education institutions, premier faculty coordinators, and student innovation teams solving state-wide civic challenges.
           </p>
