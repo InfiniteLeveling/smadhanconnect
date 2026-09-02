@@ -6,6 +6,7 @@ import { JharkhandHeroGraphic } from '../components/home/JharkhandHeroGraphic';
 import { FeatureCards } from '../components/home/FeatureCards';
 import { ImpactSection } from '../components/home/ImpactSection';
 import { HeroLoginCard } from '../components/home/HeroLoginCard';
+import { ScrollReveal } from '../components/ui/ScrollReveal';
 import { 
   ArrowRight, 
   Sparkles, 
@@ -236,119 +237,128 @@ export const HomePage = () => {
         {/* ===================================================================== */}
         {/* 2. SAMADHAN AI CIVIC SPOTLIGHT BANNER                                */}
         {/* ===================================================================== */}
-        <section className="bg-gradient-to-r from-slate-900 via-brand-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
+        <ScrollReveal direction="up" delay={50}>
+          <section className="bg-gradient-to-r from-slate-900 via-brand-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            <div className="lg:col-span-8 space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold font-mono">
-                <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-                <span>OFFICIAL 25-DOMAIN CIVIC ASSISTANT</span>
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+              <div className="lg:col-span-8 space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold font-mono">
+                  <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+                  <span>OFFICIAL 25-DOMAIN CIVIC ASSISTANT</span>
+                </div>
+
+                <h2 className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-white">
+                  Have questions about public schemes, electricity, agriculture, or citizen complaints?
+                </h2>
+
+                <p className="text-sm text-slate-300 leading-relaxed max-w-2xl">
+                  Ask <b>Samadhan AI</b>—the official assistant of Samadhan.Connect powered by Google Gemini 2.5 Pro. Get structured guidance, eligible subsidies, and grievance steps across all 25 supported civic domains.
+                </p>
+
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {['🌾 Agriculture', '⚡ Electricity & Power', '🏛️ Govt Schemes', '📋 Citizen Complaints', '🆔 Aadhaar/Certificates', '🏥 Healthcare'].map((domain, i) => (
+                    <span key={i} className="text-xs px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700 text-slate-300">
+                      {domain}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-white">
-                Have questions about public schemes, electricity, agriculture, or citizen complaints?
-              </h2>
-
-              <p className="text-sm text-slate-300 leading-relaxed max-w-2xl">
-                Ask <b>Samadhan AI</b>—the official assistant of Samadhan.Connect powered by Google Gemini 2.5 Pro. Get structured guidance, eligible subsidies, and grievance steps across all 25 supported civic domains.
-              </p>
-
-              <div className="flex flex-wrap gap-2 pt-1">
-                {['🌾 Agriculture', '⚡ Electricity & Power', '🏛️ Govt Schemes', '📋 Citizen Complaints', '🆔 Aadhaar/Certificates', '🏥 Healthcare'].map((domain, i) => (
-                  <span key={i} className="text-xs px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700 text-slate-300">
-                    {domain}
-                  </span>
-                ))}
+              <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end items-start lg:items-end">
+                <Link to="/messages">
+                  <button className="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-400 hover:from-brand-400 hover:to-emerald-300 text-slate-950 font-bold rounded-xl text-sm shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all flex items-center gap-2 cursor-pointer">
+                    <Bot className="w-4 h-4" />
+                    <span>Start Chat with Samadhan AI</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+                <span className="text-[11px] text-slate-400">Zero wait time • 24/7 Assistance</span>
               </div>
             </div>
-
-            <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end items-start lg:items-end">
-              <Link to="/messages">
-                <button className="px-6 py-3 bg-gradient-to-r from-brand-500 to-emerald-400 hover:from-brand-400 hover:to-emerald-300 text-slate-950 font-bold rounded-xl text-sm shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all flex items-center gap-2 cursor-pointer">
-                  <Bot className="w-4 h-4" />
-                  <span>Start Chat with Samadhan AI</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </Link>
-              <span className="text-[11px] text-slate-400">Zero wait time • 24/7 Assistance</span>
-            </div>
-          </div>
-        </section>
+          </section>
+        </ScrollReveal>
 
         {/* ===================================================================== */}
         {/* 3. 5-STAKEHOLDER ROLE OVERVIEW CARDS                                  */}
         {/* ===================================================================== */}
-        <section className="space-y-6">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200/70 text-brand-800 text-xs font-bold uppercase tracking-wider font-mono">
-              <Users className="w-3.5 h-3.5 text-brand-600" />
-              Tailored for Every Stakeholder
+        <ScrollReveal direction="up" delay={100}>
+          <section className="space-y-6">
+            <div className="text-center max-w-2xl mx-auto space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200/70 text-brand-800 text-xs font-bold uppercase tracking-wider font-mono">
+                <Users className="w-3.5 h-3.5 text-brand-600" />
+                Tailored for Every Stakeholder
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 tracking-tight">
+                One Unified Ecosystem, 5 Collaborative Roles
+              </h2>
+              <p className="text-sm text-slate-500">
+                Select your persona upon first login to access personalized workspaces, tools, and telemetry.
+              </p>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 tracking-tight">
-              One Unified Ecosystem, 5 Collaborative Roles
-            </h2>
-            <p className="text-sm text-slate-500">
-              Select your persona upon first login to access personalized workspaces, tools, and telemetry.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
-            {ROLES_OVERVIEW.map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={idx}
-                  className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
-                >
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${item.color} text-white flex items-center justify-center shadow-md shadow-slate-900/10 group-hover:scale-110 transition-transform`}>
-                        <Icon className="w-6 h-6" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+              {ROLES_OVERVIEW.map((item, idx) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={idx}
+                    className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
+                  >
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${item.color} text-white flex items-center justify-center shadow-md shadow-slate-900/10 group-hover:scale-110 transition-transform`}>
+                          <Icon className="w-6 h-6" />
+                        </div>
+                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200/80 font-mono">
+                          {item.tag}
+                        </span>
                       </div>
-                      <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200/80 font-mono">
-                        {item.tag}
-                      </span>
+
+                      <h3 className="text-lg font-bold font-display text-slate-900 group-hover:text-brand-700 transition-colors">
+                        {item.role}
+                      </h3>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        {item.desc}
+                      </p>
                     </div>
 
-                    <h3 className="text-lg font-bold font-display text-slate-900 group-hover:text-brand-700 transition-colors">
-                      {item.role}
-                    </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      {item.desc}
-                    </p>
+                    <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
+                      <Link
+                        to={item.link}
+                        className="text-xs font-bold text-brand-700 hover:text-brand-800 flex items-center gap-1 group-hover:translate-x-1 transition-transform"
+                      >
+                        <span>Explore Portal</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
                   </div>
-
-                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
-                    <Link
-                      to={item.link}
-                      className="text-xs font-bold text-brand-700 hover:text-brand-800 flex items-center gap-1 group-hover:translate-x-1 transition-transform"
-                    >
-                      <span>Explore Portal</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
+                );
+              })}
+            </div>
+          </section>
+        </ScrollReveal>
 
         {/* ===================================================================== */}
         {/* 4. CORE WORKFLOW CARDS SECTION                                        */}
         {/* ===================================================================== */}
-        <section className="pt-2">
-          <FeatureCards />
-        </section>
+        <ScrollReveal direction="up" delay={150}>
+          <section className="pt-2">
+            <FeatureCards />
+          </section>
+        </ScrollReveal>
 
         {/* ===================================================================== */}
         {/* 5. IMPACT & BENEFITS + ECOSYSTEM BANNER                               */}
         {/* ===================================================================== */}
-        <section className="pt-2">
-          <ImpactSection />
-        </section>
+        <ScrollReveal direction="up" delay={200}>
+          <section className="pt-2">
+            <ImpactSection />
+          </section>
+        </ScrollReveal>
 
       </div>
     </div>
   );
 };
+

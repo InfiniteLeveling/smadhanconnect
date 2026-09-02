@@ -4,6 +4,8 @@ import { AuthProvider } from './context/AuthContext';
 import { RoleSelectionModal } from './components/auth/RoleSelectionModal';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
+import { ScrollProgress } from './components/ui/ScrollProgress';
+import { ScrollToTopButton } from './components/ui/ScrollToTopButton';
 import { RoleGuard } from './components/layout/RoleGuard';
 import { HomePage } from './pages/HomePage';
 import { ReportProblemPage } from './pages/ReportProblemPage';
@@ -21,8 +23,11 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans">
+        <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans relative">
           
+          {/* Top Scroll Reading Progress Indicator */}
+          <ScrollProgress />
+
           {/* Main Global Navigation Bar */}
           <Navbar />
 
@@ -60,6 +65,9 @@ export default function App() {
             </Routes>
           </main>
 
+          {/* Floating Scroll To Top Interactive Button */}
+          <ScrollToTopButton />
+
           {/* Global Civic Tech Footer */}
           <Footer />
         </div>
@@ -67,5 +75,6 @@ export default function App() {
     </Router>
   );
 }
+
 
 
