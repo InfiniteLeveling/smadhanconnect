@@ -145,8 +145,9 @@ export const Navbar = () => {
         {/* =================================================================== */}
         {/* 1. MAIN TOP NAVBAR (LOGO + REPORT PROBLEM + SIGN IN / USER PROFILE)  */}
         {/* =================================================================== */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10">
           <div className="flex items-center justify-between h-16">
+
             
             {/* BRAND LOGO & TITLE */}
             <div className="flex items-center gap-3">
@@ -489,8 +490,9 @@ export const Navbar = () => {
         {/* 2. MINI HORIZONTAL SUB-NAVBAR (UNDER MAIN NAVBAR)                    */}
         {/* =================================================================== */}
         <div className="hidden lg:block border-t border-slate-200/70 bg-slate-50/70 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10">
             <div className="flex items-center justify-between h-11">
+
               
               {/* Navigation Tabs */}
               <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
