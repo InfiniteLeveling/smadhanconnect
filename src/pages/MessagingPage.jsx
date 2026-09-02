@@ -82,7 +82,7 @@ export const MessagingPage = () => {
   const [newMsgText, setNewMsgText] = useState('');
   const [sending, setSending] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
 
   // Save AI messages to localStorage
@@ -119,9 +119,16 @@ export const MessagingPage = () => {
     }
   }, [activeConvId]);
 
+  // Scroll only the internal messages container, never the window
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, aiMessages, isAiLoading]);
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, [messages, aiMessages.length, isAiLoading]);
+
 
   // Handle Send logic
   const handleSend = async (e) => {
@@ -238,21 +245,21 @@ export const MessagingPage = () => {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
       
       {/* Decorative Top Ambient Glow */}
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-full max-w-5xl h-72 bg-gradient-to-b from-brand-200/20 via-emerald-100/10 to-transparent pointer-events-none -z-10 blur-3xl" />
+      <div className="absolute top-28 left-1/2 -translate-x-1/2 w-full max-w-5xl h-64 bg-gradient-to-b from-brand-200/20 via-emerald-100/10 to-transparent pointer-events-none -z-10 blur-3xl" />
 
       {/* Main Glassmorphic Workspace Container */}
-      <div className="bg-white/90 backdrop-blur-2xl rounded-3xl border border-slate-200/90 shadow-2xl shadow-slate-200/60 overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[760px] max-h-[88vh]">
+      <div className="bg-white/95 backdrop-blur-2xl rounded-3xl border border-slate-200/90 shadow-xl shadow-slate-200/50 overflow-hidden grid grid-cols-1 md:grid-cols-12 h-[calc(100vh-10.5rem)] min-h-[580px] max-h-[850px]">
         
         {/* =================================================================== */}
         {/* 1. LEFT SIDEBAR: CHANNEL DIRECTORY & CONVERSATIONS                  */}
         {/* =================================================================== */}
-        <div className="md:col-span-4 lg:col-span-4 border-r border-slate-200/80 bg-slate-50/60 flex flex-col h-full">
+        <div className="md:col-span-4 lg:col-span-4 border-r border-slate-200/80 bg-slate-50/60 flex flex-col h-full overflow-hidden">
           
-          {/* Sidebar Header */}
-          <div className="p-4 border-b border-slate-200/80 bg-white/70 backdrop-blur-md flex items-center justify-between">
+          {/* Sidebar Header (Fixed at top of sidebar) */}
+          <div className="shrink-0 p-3.5 sm:p-4 border-b border-slate-200/80 bg-white/80 backdrop-blur-md flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-xl bg-brand-50 border border-brand-200/80 flex items-center justify-center text-brand-700 shadow-2xs">
                 <MessageSquare className="w-4 h-4" />
@@ -268,8 +275,8 @@ export const MessagingPage = () => {
             </div>
           </div>
 
-          {/* Search Channels Input */}
-          <div className="p-3 border-b border-slate-200/70">
+          {/* Search Channels Input (Fixed) */}
+          <div className="shrink-0 p-3 border-b border-slate-200/70">
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
@@ -282,8 +289,9 @@ export const MessagingPage = () => {
             </div>
           </div>
 
-          {/* Channels & Conversations List */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
+          {/* Channels & Conversations List (Scrollable) */}
+          <div data-lenis-prevent className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
+
             
             {/* PINNED SAMADHAN AI CHANNEL CARD */}
             <button
@@ -368,10 +376,10 @@ export const MessagingPage = () => {
         {/* =================================================================== */}
         {/* 2. RIGHT CHAT PANEL: STREAM & FLOATING INPUT                       */}
         {/* =================================================================== */}
-        <div className="md:col-span-8 lg:col-span-8 flex flex-col bg-white h-full relative">
+        <div className="md:col-span-8 lg:col-span-8 flex flex-col bg-white h-full overflow-hidden relative">
           
-          {/* Chat Pane Header */}
-          <div className="p-4 border-b border-slate-200/80 flex items-center justify-between bg-white/90 backdrop-blur-md z-10">
+          {/* Chat Pane Header (Fixed at top of chat) */}
+          <div className="shrink-0 p-3.5 sm:p-4 border-b border-slate-200/80 flex items-center justify-between bg-white/95 backdrop-blur-md z-10">
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold text-white shadow-md ${
                 isAiActive 
@@ -418,8 +426,9 @@ export const MessagingPage = () => {
             </div>
           </div>
 
-          {/* Messages Stream Container */}
-          <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-slate-50/50 custom-scrollbar">
+          {/* Messages Stream Container (Scrollable) */}
+          <div ref={chatContainerRef} data-lenis-prevent className="flex-1 p-4 sm:p-5 overflow-y-auto space-y-4 bg-slate-50/50 custom-scrollbar">
+
             
             {/* PROMPT STARTERS GRID (Shown when only initial message exists) */}
             {isAiActive && aiMessages.length === 1 && (
