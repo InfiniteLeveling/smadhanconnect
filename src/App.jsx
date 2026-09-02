@@ -16,26 +16,24 @@ import { AnalyticsPage } from './pages/AnalyticsPage';
 
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
-import { RegisterPage } from './pages/RegisterPage';
 import { useLocation } from 'react-router-dom';
 
 const AppContent = () => {
   const location = useLocation();
-  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  const isLoginPage = location.pathname === '/login';
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans">
-      {/* Top Role Simulator Quick-Switch Toolbar (Hidden on dedicated login/register page) */}
-      {!isAuthPage && <RoleSwitcherBar />}
+      {/* Top Role Simulator Quick-Switch Toolbar (Hidden on dedicated login page) */}
+      {!isLoginPage && <RoleSwitcherBar />}
 
-      {/* Main Global Navigation Bar (Hidden on dedicated login/register page) */}
-      {!isAuthPage && <Navbar />}
+      {/* Main Global Navigation Bar (Hidden on dedicated login page) */}
+      {!isLoginPage && <Navbar />}
 
       <div className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
           <Route path="/challenges" element={<ChallengesPage />} />
           <Route path="/challenges/:id" element={<ChallengeDetailPage />} />
           <Route path="/projects/:id" element={<ProjectWorkspacePage />} />
