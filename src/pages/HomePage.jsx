@@ -5,8 +5,8 @@ import { CivicNetworkCanvas } from '../components/home/CivicNetworkCanvas';
 import { JharkhandHeroGraphic } from '../components/home/JharkhandHeroGraphic';
 import { FeatureCards } from '../components/home/FeatureCards';
 import { ImpactSection } from '../components/home/ImpactSection';
-import { HeroLoginCard } from '../components/home/HeroLoginCard';
 import { ScrollReveal } from '../components/ui/ScrollReveal';
+
 import { 
   ArrowRight, 
   Sparkles, 
@@ -204,13 +204,8 @@ export const HomePage = () => {
               </Link>
             </div>
 
-            {/* LEFT-SIDE DIRECT LOGIN / PERSONA WINDOW */}
-            <div className="pt-2 max-w-xl">
-              <HeroLoginCard />
-            </div>
-
             {/* Micro Live Stats Bar */}
-            <div className="flex flex-wrap items-center gap-6 pt-2 text-xs text-slate-500 font-medium">
+            <div className="flex flex-wrap items-center gap-6 pt-4 text-xs text-slate-500 font-medium">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 <span>24 Districts Covered</span>
@@ -224,6 +219,7 @@ export const HomePage = () => {
                 <span>5-Phase Project Workspace</span>
               </div>
             </div>
+
 
           </div>
 
