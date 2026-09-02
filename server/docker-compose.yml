@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  invictus-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: invictus-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/invictus_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - JWT_ACCESS_SECRET=invictus_super_secret_jwt_access_key_2026_sih
+      - JWT_REFRESH_SECRET=invictus_super_secret_jwt_refresh_key_2026_sih
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - invictus-network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: invictus-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: invictus_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - invictus-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: invictus-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - invictus-network
+
+networks:
+  invictus-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
