@@ -25,7 +25,7 @@ export default function App() {
     <Router>
       <AuthProvider>
         <SmoothScrollProvider>
-          <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans relative">
+          <div className="flex flex-col min-h-screen bg-[#0B0F19] text-slate-100 font-sans relative">
             
             {/* Top Scroll Reading Progress Indicator */}
             <ScrollProgress />

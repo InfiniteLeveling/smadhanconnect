@@ -1,0 +1,133 @@
+================================================================================
+  SAMADHAN CONNECT — GOOGLE STITCH GLOBAL PROJECT INSTRUCTIONS (COPY & PASTE)
+================================================================================
+INSTRUCTIONS FOR USER:
+Copy all the text below this header (from "--- BEGIN STITCH INSTRUCTIONS ---" to
+"--- END STITCH INSTRUCTIONS ---") and paste it directly into the "Additional 
+Instructions" / "Design System Rules" box in Google Stitch.
+================================================================================
+
+--- BEGIN STITCH INSTRUCTIONS ---
+
+You are designing the frontend UI for "Samadhan Connect", India's premier national civic innovation and problem-solving ecosystem. The platform brings together five core stakeholders:
+1. Everyday Citizens (reporting local civic problems with GPS photos & video evidence)
+2. Students & Innovators (submitting technical prototypes and solving national challenges)
+3. University R&D Labs & Faculty Mentors (academic endorsement and lab verification)
+4. Government Ministries & Nodal Officers (posting national RFPs and managing district grievances)
+5. Industry Partners & CSR Funds (funding student prototypes with milestone grants)
+
+AESTHETIC ARCHETYPE & DESIGN PHILOSOPHY:
+- Modern Civic-Tech & GovTech SaaS: Strike the exact balance between institutional credibility (authoritative government trust) and tier-1 futuristic SaaS polish (inspired by Linear, Stripe, Apple, and Vercel).
+- Visual Style: Clean, high-contrast, luminous, and kinetic. Use frosted glassmorphic surfaces, hairline borders, radial gradient mesh backgrounds, glowing status indicators, and deliberate micro-interactions.
+- Never use generic placeholders like "Lorem Ipsum". Always use realistic Indian civic, governance, and academic context (e.g., Ministry of Jal Shakti, NDMC Delhi, IIT Madras, rural solar micro-grids, groundwater contamination).
+
+--------------------------------------------------------------------------------
+1. COLOR SYSTEM & DESIGN TOKENS (STRICTLY ENFORCE)
+--------------------------------------------------------------------------------
+Apply a strict 60-30-10 color harmony:
+- 60% Dominant Base:
+  * Light Mode: Crisp Slate-50 (#F8FAFC) background with pure white (#FFFFFF) elevated surfaces.
+  * Dark Mode: Deep obsidian (#0B0F19) background with dark slate (#0F172A) elevated surfaces.
+- 30% Structural Hierarchy:
+  * Glass surfaces: Frosted glass (backdrop-blur-md bg-white/85 dark:bg-slate-900/85).
+  * Borders: Hairline 1px borders (border-slate-200/80 dark:border-slate-800/80).
+- 10% High-Impact Accent (Brand Emerald / Green):
+  * brand-50: #F0FDF4 (subtle active pill background)
+  * brand-100: #DCFCE7 (soft badge background)
+  * brand-200: #BBF7D0 (hover border tint)
+  * brand-300: #86EFAC (focus rings)
+  * brand-400: #4ADE80 (radiant accents & glowing indicators)
+  * brand-500: #22C55E (primary interactive highlights & success states)
+  * brand-600: #16A34A (PRIMARY BRAND COLOR for buttons & key CTAs)
+  * brand-700: #15803D (hover states for buttons)
+  * brand-950: #052E16 (deep card gradients & dark accents)
+
+Semantic Stakeholder & Status Colors:
+- Government Ministries & Nodal Officers: Royal Blue (#2563EB)
+- Critical / Urgent Civic Grievances: Alert Rose (#EF4444)
+- Academic Research & Universities: Deep Indigo (#4F46E5)
+- Industry & CSR Grant Allocations: Vibrant Purple (#9333EA)
+- In-Review / Pending Milestones: Warm Amber (#F59E0B)
+- Solved / Verified Status: Emerald Green (#16A34A / #22C55E)
+
+--------------------------------------------------------------------------------
+2. TYPOGRAPHY & TEXT HIERARCHY
+--------------------------------------------------------------------------------
+- Display Headings & Big Metric Numbers:
+  * Font: 'Outfit', sans-serif
+  * Weights: Bold (700) or ExtraBold (800)
+  * Tracking: tracking-tight (-0.02em to -0.03em)
+  * Use gradient text highlights on key hero phrases:
+    `bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 bg-clip-text text-transparent`
+- Body Text, Descriptions & Navigation:
+  * Font: 'Plus Jakarta Sans' or 'Inter', sans-serif
+  * Weights: Regular (400), Medium (500), SemiBold (600)
+  * High legibility line-height (leading-relaxed for paragraphs)
+- Metadata, Ticket Numbers & Currency:
+  * Font: Monospace font (JetBrains Mono / tabular-nums) for Ticket IDs (e.g., #SAM-2026-8942), GPS coordinates (28.6139° N, 77.2090° E), and Grant Amounts (₹25,00,000).
+
+--------------------------------------------------------------------------------
+3. ELEVATION, RADIUS & MICRO-INTERACTION RULES
+--------------------------------------------------------------------------------
+- Border Radii:
+  * Tags, pills & badges: rounded-full (9999px)
+  * Inputs, buttons & small components: rounded-xl (12px)
+  * Standard cards & containers: rounded-2xl (16px)
+  * Hero containers & modal dialogs: rounded-3xl (24px)
+- Shadows & Ambient Lighting:
+  * Soft Ambient: `box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.06);`
+  * Radiant Glow: `box-shadow: 0 0 25px -5px rgba(34, 197, 94, 0.25);`
+- Micro-Interactions on Every Interactive Element:
+  * All buttons: Include active press state `active:scale-[0.97] transition-transform duration-150`.
+  * All cards: Include hover elevation `hover:-translate-y-1 hover:border-emerald-400 hover:shadow-xl transition-all duration-300`.
+  * Status badges: Include a pulsating colored dot (`animate-pulse` or `animate-ping`) next to text.
+  * Focus indicators: Always provide accessible `focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2`.
+
+--------------------------------------------------------------------------------
+4. MASTER COMPONENT PATTERNS TO GENERATE
+--------------------------------------------------------------------------------
+
+A. LANDING PAGE & HERO SECTION:
+- Top Announcement Pill: "🇮🇳 National Innovation Challenge 2026 Live — ₹50 Lakhs in Seed Grants →" with shimmering border.
+- Kinetic Hero Headline: "Where National Challenges Meet Groundbreaking Innovators."
+- Dual CTAs:
+  * Primary Button: "⚡ Solve Challenges →" (Emerald gradient with soft glow)
+  * Secondary Button: "🚨 Report an Issue" (Frosted glass with subtle border)
+- Social Proof Cluster: Stacked avatars showing "Joined by 3,400+ innovators across 140+ Indian colleges".
+- Live Activity Ticker (Marquee): Streaming horizontal milestone bar showing recent solved civic issues, new ministry RFPs, and funded prototypes.
+- 4-Stat Metric Grid: "1,240+ Problems Reported", "₹18.5 Cr+ Total Grants", "340+ University Labs", "96.4% Resolution Rate".
+
+B. 4-PILLAR ECOSYSTEM BENTO GRID:
+- Asymmetrical 4-box layout:
+  1. Box 1 (Large 2x2): "Government RFPs & Nodal Challenges" (Active RFPs, live countdowns, ministry verified seals).
+  2. Box 2 (Wide 2x1): "University & Student Innovation" (Faculty endorsements, academic research credits, prototype labs).
+  3. Box 3 (Wide 2x1): "Industry & CSR Grants" (Corporate funding pledges, pilot testing facilities, industrial mentors).
+  4. Box 4 (Full Width 4x1): "Citizen Voice & Geotagging" (60-second photo/GPS reporting, AI auto-triage, public tracker).
+
+C. CHALLENGE CARDS (NATIONAL RFPs):
+- Header: Sponsoring Ministry badge with verified checkmark (e.g., "Ministry of Jal Shakti") and live status pill ("🟢 Open • 14 Days Left").
+- Content: Problem title, 2-line technical synopsis, and domain chips ("IoT Sensors", "Clean Water", "Hardware Prototype").
+- Funding Bar: Bold grant callout (e.g., "₹25,00,000 Total Grant Fund"), proposals count ("18 Teams Pledged"), and required TRL stage ("TRL 4 to 7").
+- Actions: "View Problem Statement" link and glowing "⚡ Submit Solution →" CTA button.
+
+D. CITIZEN 3-STEP REPORTING WIZARD:
+- Animated 3-step progress bar: [1. The Problem] ➔ [2. Geo-Location] ➔ [3. Photo Proof].
+- Step 1: Title, Category selector pills (Sanitation, Roads, Electricity, Water), description field, and an "AI Suggestion Pill" indicating auto-detected category and priority.
+- Step 2: "📍 Auto-Detect Current GPS Location" button with interactive map preview card and ward address chip.
+- Step 3: Drag-and-drop photo/video uploader with thumbnail cards and file size counters.
+- Final State: A digital "Citizen Tracking Pass" styled like a sleek boarding pass with a scannable QR Code, unique Tracking ID (#SAM-2026-8942), assigned Nodal Officer details, and an interactive 4-stage resolution milestone timeline.
+
+E. SAMADHAN AI COPILOT:
+- Floating launcher button in the bottom right corner with an animated emerald gradient pulse.
+- Sliding glassmorphic chat drawer with typing streaming animation, verified government scheme reference chips, and quick action buttons.
+
+--------------------------------------------------------------------------------
+5. TECHNICAL & CODE OUTPUT STANDARDS
+--------------------------------------------------------------------------------
+- Output clean, modular React 19 + Tailwind CSS v3 code.
+- Use vector icons from `lucide-react` (e.g., ArrowRight, Sparkles, MapPin, CheckCircle2, ShieldCheck, Building2, GraduationCap, Factory, AlertCircle, UploadCloud).
+- Maintain 100% mobile responsiveness (mobile-first breakpoints: default -> sm -> md -> lg -> xl).
+- Ensure strict contrast accessibility (WCAG AA compliant).
+- Use semantic HTML tags: `<header>`, `<main>`, `<section>`, `<article>`, `<nav>`, `<footer>`.
+
+--- END STITCH INSTRUCTIONS ---
