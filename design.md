@@ -22,12 +22,12 @@
         ┌─────────────────────────────────────────────────────────────┐
         │                    DESIGN TENETS                            │
         ├─────────────────────────────┬───────────────────────────────┤
-        │ 🏛️ INSTITUTIONAL TRUST       │ ⚡ HIGH-VELOCITY SAAS POLISH   │
+        │ 🏛️ INSTITUTIONAL TRUST      │ ⚡ HIGH-VELOCITY SAAS POLISH │
         │ Clean typography, clear     │ Micro-interactions, soft      │
         │ governance badges, verified │ glassmorphism, instant search,│
         │ department credentials.     │ smooth kinetic transitions.   │
         ├─────────────────────────────┼───────────────────────────────┤
-        │ ♿ INCLUSIVE ACCESSIBILITY   │ 🤖 AI-AUGMENTED INTELLIGENCE │
+        │ ♿ INCLUSIVE ACCESSIBILITY  │ 🤖 AI-AUGMENTED INTELLIGENCE │
         │ High-contrast ratios, focus │ Ambient AI assistance, prompt │
         │ indicators, touch targets.  │ chips, auto-categorization.   │
         └─────────────────────────────┴───────────────────────────────┘
